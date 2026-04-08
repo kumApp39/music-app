@@ -1,0 +1,398 @@
+```react
+import React, { useState } from 'react';
+import { Copy, CheckCircle2, Music, Settings, Info, Music4, Mic2, Heart, ListMusic, FileText, ChevronRight, Users, Sparkles, Smile, PenTool, ArrowRight, ShieldAlert } from 'lucide-react';
+
+// --- 子供モード用 言葉の引き出し ---
+const wordBank = [
+  { category: 'あいさつ', color: 'bg-orange-100 text-orange-800 hover:bg-orange-200 border-orange-300', words: ['おはよう', 'こんにちは', 'ありがとう', 'よろしくね', 'またあした'] },
+  { category: 'がっこう', color: 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200 border-emerald-300', words: ['きょうしつ', 'こくばん', 'ノート', 'チャイム', 'あたらしいうた', 'ともだち', 'せんせい'] },
+  { category: 'きもち', color: 'bg-pink-100 text-pink-800 hover:bg-pink-200 border-pink-300', words: ['どきどき', 'わくわく', 'きらきら', 'えがお', 'うれしい', 'たのしい', 'だいすき'] },
+  { category: 'うごき', color: 'bg-blue-100 text-blue-800 hover:bg-blue-200 border-blue-300', words: ['てをつなぐ', 'はしりだす', 'うたう', 'わらう', 'たすけあう', 'みつける', 'ふみだす'] },
+  { category: 'もくひょう', color: 'bg-purple-100 text-purple-800 hover:bg-purple-200 border-purple-300', words: ['あきらめない', 'みんなでいっしょに', 'ぜんりょくで', 'みらいへ', 'ゆめをみる', 'ちからをあわせて'] }
+];
+
+export default function App() {
+  const [userType, setUserType] = useState(null); 
+  
+  // 先生・子供で共有する歌詞データ
+  const [sharedLyricsA, setSharedLyricsA] = useState('');
+  const [sharedLyricsB, setSharedLyricsB] = useState('');
+
+  // --- トップメニュー画面 ---
+  if (userType === null) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6 md:p-12 font-sans">
+        <div className="max-w-3xl w-full bg-white rounded-[2rem] shadow-xl p-10 md:p-16 text-center border border-slate-100">
+          <div className="flex justify-center mb-8">
+            <div className="bg-blue-100 p-6 rounded-full">
+              <Music className="w-20 h-20 text-blue-600" />
+            </div>
+          </div>
+          <h1 className="text-4xl md:text-5xl font-black text-slate-800 mb-6">学級の歌 つくり隊！</h1>
+          <p className="text-slate-600 mb-12 text-xl font-bold">モードを選択してください</p>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
+            <button
+              onClick={() => setUserType('child')}
+              className="group relative overflow-hidden p-8 rounded-[2rem] border-4 border-amber-200 bg-amber-50 active:bg-amber-100 active:scale-95 transition-all text-center flex flex-col items-center gap-6 shadow-sm"
+            >
+              <div className="bg-amber-200 p-6 rounded-full group-hover:scale-110 transition-transform">
+                <Smile className="w-16 h-16 text-amber-700" />
+              </div>
+              <div>
+                <h2 className="text-3xl font-black text-amber-800 mb-2">こども モード</h2>
+                <p className="text-amber-700 text-lg font-bold">かしを かんがえよう！</p>
+              </div>
+            </button>
+
+            <button
+              onClick={() => setUserType('teacher')}
+              className="group relative overflow-hidden p-8 rounded-[2rem] border-4 border-blue-200 bg-blue-50 active:bg-blue-100 active:scale-95 transition-all text-center flex flex-col items-center gap-6 shadow-sm"
+            >
+              <div className="bg-blue-200 p-6 rounded-full group-hover:scale-110 transition-transform">
+                <Users className="w-16 h-16 text-blue-700" />
+              </div>
+              <div>
+                <h2 className="text-3xl font-black text-blue-800 mb-2">せんせい モード</h2>
+                <p className="text-blue-700 text-lg font-bold">曲のプロンプトを作成</p>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
+      <header className="bg-white border-b border-slate-200 p-4 sticky top-0 z-10 flex justify-between items-center shadow-sm px-6">
+        <div className="flex items-center gap-3 font-bold text-xl text-slate-700">
+          <Music className="w-6 h-6 text-blue-500" />
+          <span>学級の歌 アプリ</span>
+        </div>
+        <button 
+          onClick={() => setUserType(null)}
+          className="text-sm font-bold text-slate-600 active:bg-slate-200 bg-slate-100 px-5 py-2.5 rounded-full transition-colors border border-slate-200 shadow-sm"
+        >
+          さいしょにもどる
+        </button>
+      </header>
+
+      <main className="flex-1 p-4 md:p-6 lg:p-8">
+        {userType === 'child' ? (
+          <ChildMode 
+            lyricsA={sharedLyricsA} setLyricsA={setSharedLyricsA}
+            lyricsB={sharedLyricsB} setLyricsB={setSharedLyricsB}
+            onFinish={() => setUserType('teacher')}
+          />
+        ) : (
+          <TeacherMode 
+            lyricsA={sharedLyricsA} setLyricsA={setSharedLyricsA}
+            lyricsB={sharedLyricsB} setLyricsB={setSharedLyricsB}
+          />
+        )}
+      </main>
+    </div>
+  );
+}
+
+// ==========================================
+// こどもモードコンポーネント (iPad向け大きなUIのまま)
+// ==========================================
+function ChildMode({ lyricsA, setLyricsA, lyricsB, setLyricsB, onFinish }) {
+  const [activeTab, setActiveTab] = useState('A'); 
+
+  const appendWord = (word) => {
+    const space = " ";
+    if (activeTab === 'A') {
+      setLyricsA(prev => prev + (prev.length > 0 && !prev.endsWith('\n') ? space : '') + word);
+    } else {
+      setLyricsB(prev => prev + (prev.length > 0 && !prev.endsWith('\n') ? space : '') + word);
+    }
+  };
+
+  return (
+    <div className="max-w-7xl mx-auto space-y-6 md:space-y-8">
+      <div className="bg-gradient-to-r from-amber-200 to-orange-200 rounded-3xl p-8 md:p-10 text-center shadow-md">
+        <h1 className="text-3xl md:text-4xl font-black text-amber-900 mb-4 flex items-center justify-center gap-3">
+          <Sparkles className="w-10 h-10 text-amber-600" />
+          じぶんたちだけの「かし」をつくろう！
+        </h1>
+        <p className="text-amber-800 text-xl font-bold">すきな ことばを えらんだり、じぶんで かいたりしてね。</p>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+        <div className="bg-white rounded-[2rem] shadow-md p-6 md:p-8 border border-slate-100">
+          <h2 className="text-2xl font-black text-slate-800 mb-6 flex items-center gap-3">
+            <span className="bg-slate-100 p-3 rounded-2xl"><Sparkles className="w-7 h-7 text-amber-500" /></span>
+            ことばの ひきだし
+          </h2>
+          <div className="space-y-8">
+            {wordBank.map((group, idx) => (
+              <div key={idx}>
+                <h3 className="text-lg font-black text-slate-500 mb-3 pl-2 flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-slate-300"></span>{group.category}
+                </h3>
+                <div className="flex flex-wrap gap-3">
+                  {group.words.map(word => (
+                    <button key={word} onClick={() => appendWord(word)} className={`px-5 py-3 md:px-6 md:py-4 rounded-2xl text-lg md:text-xl font-bold transition-transform active:scale-90 border-2 shadow-sm ${group.color}`}>
+                      {word}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="bg-white rounded-[2rem] shadow-md p-6 md:p-8 border border-slate-100 flex flex-col h-full min-h-[600px]">
+          <h2 className="text-2xl font-black text-slate-800 mb-6 flex items-center gap-3">
+            <span className="bg-slate-100 p-3 rounded-2xl"><PenTool className="w-7 h-7 text-blue-500" /></span>
+            かしを かくところ
+          </h2>
+          
+          <div className="flex gap-3 mb-6 bg-slate-100 p-2 rounded-3xl">
+            <button onClick={() => setActiveTab('A')} className={`flex-1 py-4 md:py-5 rounded-2xl text-xl font-black text-center transition-all ${activeTab === 'A' ? 'bg-white text-blue-600 shadow-md transform scale-[1.02]' : 'text-slate-500'}`}>1ばん (さいしょ)</button>
+            <button onClick={() => setActiveTab('B')} className={`flex-1 py-4 md:py-5 rounded-2xl text-xl font-black text-center transition-all ${activeTab === 'B' ? 'bg-white text-indigo-600 shadow-md transform scale-[1.02]' : 'text-slate-500'}`}>2ばん (てんかい)</button>
+          </div>
+          
+          <div className="flex-1 flex flex-col">
+            {activeTab === 'A' ? (
+              <textarea value={lyricsA} onChange={(e) => setLyricsA(e.target.value)} placeholder="ここに、1ばんの かしが はいります。" className="w-full flex-1 min-h-[300px] p-8 bg-blue-50/50 border-4 border-blue-100 rounded-3xl focus:ring-4 focus:ring-blue-200 focus:border-blue-400 outline-none resize-none text-2xl font-bold text-slate-700 leading-loose" />
+            ) : (
+              <textarea value={lyricsB} onChange={(e) => setLyricsB(e.target.value)} placeholder="ここに、2ばんの かしが はいります。" className="w-full flex-1 min-h-[300px] p-8 bg-indigo-50/50 border-4 border-indigo-100 rounded-3xl focus:ring-4 focus:ring-indigo-200 focus:border-indigo-400 outline-none resize-none text-2xl font-bold text-slate-700 leading-loose" />
+            )}
+          </div>
+          
+          <div className="mt-8 pt-8 border-t-2 border-slate-100 flex justify-end">
+            <button onClick={onFinish} className="bg-emerald-500 active:bg-emerald-600 active:scale-95 text-white px-10 py-5 rounded-3xl font-black text-2xl flex items-center gap-3 transition-transform shadow-xl shadow-emerald-200">
+              せんせいに バトンタッチ！ <ArrowRight className="w-8 h-8" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ==========================================
+// せんせいモードコンポーネント (教師向けにスッキリさせたiPad UI)
+// ==========================================
+function TeacherMode({ lyricsA, setLyricsA, lyricsB, setLyricsB }) {
+  const [mode, setMode] = useState('simple'); 
+  
+  const [simpleData, setSimpleData] = useState({
+    genre: 'jpop', tempo: 'mid', mood: 'bright', vocalType: 'female_solo', vocalTone: 'clear'
+  });
+
+  const [advData, setAdvData] = useState({
+    genre: '', tempo: '', timeSignature: '4/4拍子', rhythm: '', key: '', mood: '', instruments: '', texture: '',
+    vocalMain: '', vocalChorus: '', vocalTone: '', vocalNegative: ''
+  });
+
+  const [copiedA, setCopiedA] = useState(false);
+  const [copiedB, setCopiedB] = useState(false);
+
+  // --- 選択肢の定義 ---
+  const options = {
+    genres: [
+      { id: 'jpop', label: 'J-POP風', detail: '現代的なJ-POP, キャッチーなメロディ, スタンダードなポップスアレンジ' },
+      { id: 'chorus', label: 'ピアノ伴奏の合唱曲風', detail: '学校の合唱曲スタイル, アコースティック, 叙情的なコード進行' },
+      { id: 'brass', label: '吹奏楽風', detail: '吹奏楽アレンジ, ブラスバンド, 壮大なアンサンブル' },
+      { id: 'acoustic', label: 'アコースティック（ギター弾き語り風）', detail: 'アコースティックポップ, オーガニックな響き, アンプラグド' }
+    ],
+    tempos: [
+      { id: 'slow', label: 'ゆったり', detail: 'BPM 70-80程度, バラードテンポ, ゆったりとしたノリ' },
+      { id: 'mid', label: 'ミドルテンポ', detail: 'BPM 100-110程度, アンダンテ, 歩くような安定したテンポ' },
+      { id: 'mid_fast', label: '少し早め', detail: 'BPM 120-130程度, モデラート, 軽快なテンポ' }
+    ],
+    moods: [
+      { id: 'bright', label: '明るく元気', detail: 'メジャーキー(長調)中心, ポジティブ, エネルギッシュ, 希望に満ちた雰囲気' },
+      { id: 'warm', label: '優しい・温かい', detail: '温かみのある音色, 穏やか, 包み込むような優しい雰囲気' },
+      { id: 'epic', label: '壮大・感動的', detail: 'スケール感が大きい, ドラマチック, 卒業式のような感動的な雰囲気' }
+    ],
+    vocalTypes: [
+      { id: 'female_solo', label: '女性ソロ（1名）', detail: '女性ソロボーカル1名のみ', negative: '男性の声、複数人でのコーラス・合唱、ハモリは【絶対に】入れないでください。' },
+      { id: 'male_solo', label: '男性ソロ（1名）', detail: '男性ソロボーカル1名のみ', negative: '女性の声、複数人でのコーラス・合唱、ハモリは【絶対に】入れないでください。' },
+      { id: 'mixed_chorus', label: '男女混声（合唱）', detail: '10代男女の混声合唱', negative: '単独のソロボーカルには【絶対に】しないでください。常に複数人の声が重なるようにしてください。' },
+      { id: 'female_chorus', label: '女性合唱', detail: '女性複数人による同声合唱', negative: '男性の声、単独のソロボーカルは【絶対に】入れないでください。' }
+    ],
+    vocalTones: [
+      { id: 'clear', label: 'クリア・透明感', detail: '透明感のある澄んだ10代の歌声' },
+      { id: 'energetic', label: '元気・力強い', detail: 'エネルギーに満ちた力強い10代の歌声' },
+      { id: 'gentle', label: '優しく語りかける', detail: '優しく温かみのある10代の歌声' }
+    ]
+  };
+
+  const handleSimpleChange = (e) => {
+    const { name, value } = e.target;
+    setSimpleData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleAdvChange = (e) => {
+    const { name, value } = e.target;
+    setAdvData(prev => ({ ...prev, [name]: value }));
+  };
+
+  // プロンプト生成ロジック
+  const generatePrompt = (type) => {
+    let musicSettings = '';
+    let vocalRules = '';
+    
+    if (mode === 'simple') {
+      const selectedGenre = options.genres.find(o => o.id === simpleData.genre)?.detail || '';
+      const selectedTempo = options.tempos.find(o => o.id === simpleData.tempo)?.detail || '';
+      const selectedMood = options.moods.find(o => o.id === simpleData.mood)?.detail || '';
+      const vType = options.vocalTypes.find(o => o.id === simpleData.vocalType);
+      const vTone = options.vocalTones.find(o => o.id === simpleData.vocalTone);
+
+      vocalRules = `・ボーカル構成：${vType.detail} [Vocal: ${simpleData.vocalType.replace('_', ' ')}]
+・声質・トーン：${vTone.detail}
+・【禁止事項】：${vType.negative}`;
+
+      musicSettings = `・ベースジャンル：${selectedGenre}
+・テンポとリズム：${selectedTempo}, 4/4拍子, 安定したビート
+・ムードと調性：${selectedMood}
+・音の質感(ミックス)：クリアな音質, 自然なリバーブ（残響）`;
+    } else {
+      vocalRules = `・ボーカル構成：${advData.vocalMain || '未指定'}
+・声質・トーン：${advData.vocalTone || '未指定'}
+・コーラス・ハモリ：${advData.vocalChorus || '未指定'}
+・【禁止事項】：${advData.vocalNegative || '特になし'}`;
+
+      musicSettings = `・ベースジャンル：${advData.genre || '未指定'}
+・テンポ：${advData.tempo || '未指定'}
+・リズム・拍子：${advData.rhythm || '未指定'}, ${advData.timeSignature || '4/4拍子'}
+・ムードと調性：${advData.mood || '未指定'}, キー:${advData.key || '未指定'}
+・使用楽器：${advData.instruments || '未指定'}
+・音の質感(ミックス)：${advData.texture || 'クリアな音質'}`;
+    }
+
+    if (type === 'A') {
+      return `【楽曲生成の厳守事項】
+以下の設定に完全に合致する30秒の楽曲を生成してください。
+特に「ボーカルの絶対条件」は曲の途中で変更せず、最初から最後まで厳守してください。
+
+# 1. ボーカルの絶対条件（変更不可）
+${vocalRules}
+
+# 2. 音楽スタイル（変更不可）
+${musicSettings}
+
+# 3. 曲の構成と展開
+ここは楽曲の始まりである【Aメロ (Verse 1)】です。
+静かな立ち上がりから始めてください。伴奏はシンプルに抑え、ボーカルのメロディラインをはっきりと聞かせてください。終わりの部分は、次へと続くような余韻（半終止）を持たせてください。
+
+# 4. 歌詞
+[Verse 1]
+${lyricsA || '(※ここに歌詞が入力されます)'}`;
+    } else {
+      return `【楽曲生成の厳守事項】
+以下の設定に完全に合致する30秒の楽曲を生成してください。
+※これは事前に生成したAメロの【続き（Bメロ / Pre-Chorus）】として繋げて使用します。
+
+【最重要警告】
+前段（Aメロ）から、ボーカルの人数、性別、声質、空間の響きを【絶対に】変化させないでください。メインボーカルの交代や、突然の合唱への変更は即座に失敗となります。
+
+# 1. ボーカルの絶対条件（Aメロと完全に同一・変更不可）
+${vocalRules}
+
+# 2. 音楽スタイル（Aメロと完全に同一・変更不可）
+${musicSettings}
+
+# 3. 曲の構成と展開
+ここはサビへ向かう【Bメロ (Pre-Chorus)】です。
+Aメロの静かな雰囲気から引き継ぎ、徐々に伴奏の音数やリズムの刻みを増やして、次のサビ（Chorus）に向けて感情を盛り上げる助走の展開にしてください。
+
+# 4. 歌詞
+[Pre-Chorus]
+${lyricsB || '(※ここに歌詞が入力されます)'}`;
+    }
+  };
+
+  const copyToClipboard = (text, type) => {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    textArea.style.position = "fixed";
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    try {
+      document.execCommand('copy');
+      if (type === 'A') { setCopiedA(true); setTimeout(() => setCopiedA(false), 2000); }
+      else { setCopiedB(true); setTimeout(() => setCopiedB(false), 2000); }
+    } catch (err) {
+      alert('コピーに失敗しました。');
+    }
+    document.body.removeChild(textArea);
+  };
+
+  return (
+    <div className="max-w-4xl mx-auto space-y-6 pb-12">
+      <div className="bg-white rounded-2xl shadow-sm p-6 text-center border border-slate-100">
+        <h1 className="text-2xl font-bold text-blue-900 mb-2 flex items-center justify-center gap-2">
+          <Settings className="w-6 h-6 text-blue-500" />楽曲生成プロンプト作成（教師用）
+        </h1>
+        <p className="text-slate-600 text-sm">
+          こどもたちが作成した歌詞をもとに、音楽AI用の厳密な指示文を作成します。<br className="hidden md:block"/>
+          ボーカルのブレを防ぐための「禁止事項」が自動で組み込まれます。
+        </p>
+      </div>
+
+      <section className="bg-white rounded-2xl shadow-sm p-6 border border-slate-100">
+        <h2 className="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+          <span className="bg-blue-100 text-blue-800 rounded-lg w-7 h-7 flex items-center justify-center text-sm">1</span>入力モード選択
+        </h2>
+        <div className="flex gap-4">
+          <button onClick={() => setMode('simple')} className={`flex-1 p-4 rounded-xl border-2 font-bold transition-all ${mode === 'simple' ? 'border-blue-500 bg-blue-50 text-blue-900' : 'border-slate-200 text-slate-500 active:bg-slate-50'}`}>簡単モード</button>
+          <button onClick={() => setMode('advanced')} className={`flex-1 p-4 rounded-xl border-2 font-bold transition-all ${mode === 'advanced' ? 'border-emerald-500 bg-emerald-50 text-emerald-900' : 'border-slate-200 text-slate-500 active:bg-slate-50'}`}>詳細モード</button>
+        </div>
+      </section>
+
+      <section className="bg-white rounded-2xl shadow-sm p-6 border border-slate-100">
+        <h2 className="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+          <span className="bg-blue-100 text-blue-800 rounded-lg w-7 h-7 flex items-center justify-center text-sm">2</span>楽曲のテイストとボーカル設定
+        </h2>
+        
+        {mode === 'simple' ? (
+          <div className="space-y-6">
+            <div className="bg-slate-50 p-5 rounded-xl border border-slate-200">
+              <h3 className="text-sm font-bold text-slate-700 mb-3 flex items-center gap-2"><Music4 className="w-4 h-4 text-blue-500"/>音楽のベース</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="space-y-1">
+                  <label className="text-xs font-semibold text-slate-500">ジャンル</label>
+                  <select name="genre" value={simpleData.genre} onChange={handleSimpleChange} className="w-full p-3 text-sm bg-white border border-slate-300 rounded-lg focus:border-blue-500 outline-none">
+                    {options.genres.map(opt => <option key={opt.id} value={opt.id}>{opt.label}</option>)}
+                  </select>
+                </div>
+                <div className="space-y-1">
+                  <label className="text-xs font-semibold text-slate-500">テンポ</label>
+                  <select name="tempo" value={simpleData.tempo} onChange={handleSimpleChange} className="w-full p-3 text-sm bg-white border border-slate-300 rounded-lg focus:border-blue-500 outline-none">
+                    {options.tempos.map(opt => <option key={opt.id} value={opt.id}>{opt.label}</option>)}
+                  </select>
+                </div>
+                <div className="space-y-1">
+                  <label className="text-xs font-semibold text-slate-500">ムード</label>
+                  <select name="mood" value={simpleData.mood} onChange={handleSimpleChange} className="w-full p-3 text-sm bg-white border border-slate-300 rounded-lg focus:border-blue-500 outline-none">
+                    {options.moods.map(opt => <option key={opt.id} value={opt.id}>{opt.label}</option>)}
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-amber-50 p-5 rounded-xl border border-amber-200">
+              <h3 className="text-sm font-bold text-amber-900 mb-3 flex items-center gap-2"><Mic2 className="w-4 h-4 text-amber-600"/>ボーカル設定（ブレ防止機能付き）</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-1">
+                  <label className="text-xs font-semibold text-amber-800">構成（人数・性別）</label>
+                  <select name="vocalType" value={simpleData.vocalType} onChange={handleSimpleChange} className="w-full p-3 text-sm bg-white border border-amber-300 rounded-lg focus:border-amber-500 outline-none">
+                    {options.vocalTypes.map(opt => <option key={opt.id} value={opt.id}>{opt.label}</option>)}
+                  </select>
+                </div>
+                <div className="space-y-1">
+                  <label className="text-xs font-semibold text-amber-800">声質・トーン</label>
+                  <select name="vocalTone" value={simpleData.vocalTone} onChange={handleSimpleChange} className="w-full p-3 text-sm bg-white border border-amber-300 rounded-lg focus:border-amber-500 outline-none">
+                    {options.vocalTones.map(opt => <option key={opt.id} value={opt.id}>{opt.label}</option>)}
+                  </select>
+                </div>
+              </
