@@ -1,13 +1,10 @@
-```html
 <!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>学級の歌 プロンプト＆演奏合奏サポートアプリ</title>
-    <!-- Tailwind CSS (デザイン・レイアウト用) -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Lucide Icons (アイコン用) -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         /* 画面切り替え用の非表示クラス */
@@ -16,24 +13,192 @@
         button, input, select, textarea { touch-action: manipulation; }
         /* スムーズなスクロール */
         html { scroll-behavior: smooth; }
+        /* 印刷時のデザイン調整 */
+        @media print {
+            header, button, #btn-fullscreen, .no-print, .instrument-selector-zone { display: none !important; }
+            body { background: white !important; color: black !important; }
+            .print-layout { width: 100% !important; max-width: 100% !important; box-shadow: none !important; border: none !important; padding: 0 !important; }
+        }
     </style>
 </head>
 <body class="bg-slate-50 font-sans text-slate-800 min-h-screen flex flex-col">
 
-    <!-- 共通ヘッダー -->
     <header id="main-header" class="hidden-screen bg-white border-b border-slate-200 p-4 sticky top-0 z-10 flex justify-between items-center shadow-sm px-6">
         <div class="flex items-center gap-3 font-bold text-xl text-slate-700">
             <i data-lucide="music" class="w-6 h-6 text-blue-500"></i>
-            <span>学級の歌 アプリ</span>
+            <span>学級の歌 つくり隊！</span>
         </div>
-        <div class="flex gap-3">
-            <button onclick="toggleFullScreen()" id="btn-fullscreen" class="text-sm font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 p-2.5 rounded-full transition-colors border border-slate-200 shadow-sm flex items-center justify-center" title="全画面表示">
+        <div class="flex items-center gap-4">
+            <button onclick="resetAllDataWithConfirm()" class="text-xs font-bold text-slate-400 hover:text-red-500 transition-colors flex items-center gap-1 no-print border border-slate-100 hover:border-red-100 rounded-full px-3 py-1.5 bg-slate-50 hover:bg-red-50" title="すべてのデータをクリアして新しい曲を作ります">
+                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                <span>新しく曲を作る(リセット)</span>
+            </button>
+            
+            <button onclick="toggleFullScreen()" id="btn-fullscreen" class="text-sm font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 p-2.5 rounded-full transition-colors border border-slate-200 shadow-sm flex items-center justify-center no-print" title="全画面表示">
                 <i data-lucide="maximize" class="w-5 h-5"></i>
             </button>
-            <button onclick="showScreen('top')" class="text-sm font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 px-5 py-2.5 rounded-full transition-colors border border-slate-200 shadow-sm">
+            <button onclick="showScreen('top')" class="text-sm font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 px-5 py-2.5 rounded-full transition-colors border border-slate-200 shadow-sm no-print">
                 さいしょにもどる
             </button>
         </div>
+    </header>
+
+    <main class="flex-1 w-full">
+        <div id="screen-top" class="min-h-[100vh] flex items-center justify-center p-6 md:p-12 relative">
+            <button onclick="toggleFullScreen()" class="absolute top-6 right-6 text-slate-400 hover:text-slate-600 p-2 bg-white rounded-full shadow-sm border border-slate-100">
+                <i data-lucide="maximize" class="w-6 h-6"></i>
+            </button>
+
+            <div class="max-w-5xl w-full bg-white rounded-[2rem] shadow-xl p-10 md:p-14 text-center border border-slate-100">
+                <div class="flex justify-center mb-6">
+                    <div class="bg-blue-100 p-5 rounded-full">
+                        <i data-lucide="music" class="w-16 h-16 text-blue-600"></i>
+                    </div>
+                </div>
+                <h1 class="text-4xl font-black text-slate-800 mb-2">学級の歌 つくり隊！</h1>
+                <p class="text-slate-500 mb-10 text-base">歌詞作りからAIプロンプト作成、合奏練習までを1つの流れでフルサポート</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+                    <button onclick="showScreen('child')" class="group relative overflow-hidden p-6 rounded-2xl border-2 border-amber-200 bg-amber-50/50 active:scale-95 transition-all flex flex-col justify-between h-64 shadow-sm hover:border-amber-400">
+                        <div class="flex justify-between items-start w-full">
+                            <span class="bg-amber-400 text-white font-black px-3 py-1 rounded-full text-xs">ステップ 1</span>
+                            <div class="bg-amber-200 p-3 rounded-xl group-hover:scale-110 transition-transform">
+                                <i data-lucide="smile" class="w-8 h-8 text-amber-700"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-black text-amber-900 mb-1">① かしをつくる</h2>
+                            <p class="text-amber-700 text-xs font-bold mb-2">【こども モード】</p>
+                            <p class="text-slate-600 text-xs leading-relaxed">ことばのひきだしを使って、自分たちだけのオリジナルの歌詞を楽しく考えよう！</p>
+                        </div>
+                    </button>
+
+                    <button onclick="showScreen('teacher')" class="group relative overflow-hidden p-6 rounded-2xl border-2 border-blue-200 bg-blue-50/50 active:scale-95 transition-all flex flex-col justify-between h-64 shadow-sm hover:border-blue-400">
+                        <div class="flex justify-between items-start w-full">
+                            <span class="bg-blue-500 text-white font-black px-3 py-1 rounded-full text-xs">ステップ 2</span>
+                            <div class="bg-blue-200 p-3 rounded-xl group-hover:scale-110 transition-transform">
+                                <i data-lucide="settings" class="w-8 h-8 text-blue-700"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-black text-blue-900 mb-1">② プロンプトを生成</h2>
+                            <p class="text-blue-700 text-xs font-bold mb-2">【せんせい モード】</p>
+                            <p class="text-slate-600 text-xs leading-relaxed">曲調や演奏の難易度を設定して、AI（Gemini）用の高精度な指示文を出力します。</p>
+                        </div>
+                    </button>
+
+                    <button onclick="showScreen('ensemble')" class="group relative overflow-hidden p-6 rounded-2xl border-2 border-emerald-200 bg-emerald-50/50 active:scale-95 transition-all flex flex-col justify-between h-64 shadow-sm hover:border-emerald-400">
+                        <div class="flex justify-between items-start w-full">
+                            <span class="bg-emerald-500 text-white font-black px-3 py-1 rounded-full text-xs">ステップ 3</span>
+                            <div class="bg-emerald-200 p-3 rounded-xl group-hover:scale-110 transition-transform">
+                                <i data-lucide="drum" class="w-8 h-8 text-emerald-700"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-black text-emerald-900 mb-1">③ みんなで合奏する</h2>
+                            <p class="text-emerald-700 text-xs font-bold mb-2">【みんなで合奏 モード】</p>
+                            <p class="text-slate-600 text-xs leading-relaxed">できた歌詞に自動で伴奏コードや打楽器リズムが連動。黒板への投影や楽譜の印刷に最適！</p>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="screen-child" class="hidden-screen max-w-7xl mx-auto space-y-6 p-4 md:p-8">
+            <div class="bg-gradient-to-r from-amber-200 to-orange-200 rounded-2xl p-6 text-center shadow-sm">
+                <h1 class="text-2xl md:text-3xl font-black text-amber-900 mb-2 flex items-center justify-center gap-2">
+                    <i data-lucide="sparkles" class="w-8 h-8 text-amber-600"></i>
+                    じぶんたちだけの「かし」をつくろう！
+                </h1>
+                <p class="text-amber-800 text-base font-bold">すきな ことばを えらんだり、キーボードで かいたりしてね。</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+                <div class="bg-white rounded-2xl shadow-sm p-6 border border-slate-100">
+                    <h2 class="text-xl font-black text-slate-800 mb-4 flex items-center gap-2">
+                        <i data-lucide="sparkles" class="w-5 h-5 text-amber-500"></i>
+                        ことばの ひきだし
+                    </h2>
+                    <div id="word-bank-container" class="space-y-6">
+                        </div>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-sm p-6 border border-slate-100 flex flex-col min-h-[500px]">
+                    <h2 class="text-xl font-black text-slate-800 mb-4 flex items-center gap-2">
+                        <i data-lucide="pen-tool" class="w-5 h-5 text-blue-500"></i>
+                        かしを かくところ
+                    </h2>
+                    <textarea id="child-textarea-lyrics" oninput="handleLyricsChange(this.value)" placeholder="ここに、がっこうの うたの かしが はいります。ことばをおしたり、キーボードで じぶんで かいたりしてね！" class="w-full flex-1 p-6 bg-blue-50/30 border-2 border-blue-100 rounded-xl focus:ring-4 focus:ring-blue-100 focus:border-blue-400 outline-none resize-none text-xl font-bold text-slate-700 leading-loose"></textarea>
+                    
+                    <div class="mt-4 pt-4 border-t border-slate-100 flex justify-end">
+                        <button onclick="showScreen('top')" class="bg-amber-500 hover:bg-amber-600 active:scale-95 text-white px-8 py-3 rounded-xl font-black text-lg flex items-center gap-2 transition-transform shadow-md">
+                            できた！メニューにもどる <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="screen-teacher" class="hidden-screen max-w-4xl mx-auto space-y-6 pb-12 p-4 md:p-8">
+            <div class="bg-white rounded-xl shadow-sm p-5 text-center border border-slate-100">
+                <h1 class="text-xl font-bold text-blue-900 flex items-center justify-center gap-2">
+                    <i data-lucide="settings" class="w-5 h-5 text-blue-500"></i>楽曲生成プロンプト作成（教師用）
+                </h1>
+                <p class="text-slate-500 text-xs mt-1">子供たちの歌詞をもとに、一曲の完結した学級の歌を作るための指示文（プロンプト）を設計します。</p>
+            </div>
+
+            <section class="bg-white rounded-xl shadow-sm p-6 border border-slate-100 space-y-6">
+                <div class="bg-purple-50 p-4 rounded-xl border border-purple-200">
+                    <label class="text-xs font-bold text-purple-900 flex items-center gap-1.5 mb-1">
+                        <i data-lucide="lightbulb" class="w-4 h-4"></i> 曲の全体イメージ（自由記述 / 任意）
+                    </label>
+                    <input type="text" id="common-free-image" oninput="handleFreeImageChange(this.value)" placeholder="例：NHKのおかあさんといっしょのような、明るくて親しみやすい曲" class="w-full p-2.5 text-sm bg-white border border-purple-300 rounded-lg outline-none focus:border-purple-500" />
+                </div>
+
+                <div class="bg-emerald-50/60 p-4 rounded-xl border border-emerald-200">
+                    <h3 class="text-xs font-bold text-emerald-900 mb-2 flex items-center gap-1.5">
+                        <i data-lucide="toy-brick" class="w-4 h-4 text-emerald-600"></i> えんそう伴奏のコード難易度制約
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <label class="bg-white p-3 rounded-lg border border-slate-200 hover:border-emerald-500 cursor-pointer flex flex-col justify-between transition-all">
+                            <input type="radio" name="playLevel" value="simple3" checked onclick="handlePlayLevelChange('simple3')" class="sr-only">
+                            <div>
+                                <span class="font-black text-emerald-800 text-xs block mb-1">① 超簡単（3コードのみ）</span>
+                                <span class="text-[11px] text-slate-500 leading-tight block">C, F, G(ハ長調)の主要三和音だけで演奏できる伴奏構成。低学年向け。</span>
+                            </div>
+                        </label>
+                        <label class="bg-white p-3 rounded-lg border border-slate-200 hover:border-emerald-500 cursor-pointer flex flex-col justify-between transition-all">
+                            <input type="radio" name="playLevel" value="pop4" onclick="handlePlayLevelChange('pop4')" class="sr-only">
+                            <div>
+                                <span class="font-black text-indigo-800 text-xs block mb-1">② 王道ループ（簡単4コード）</span>
+                                <span class="text-[11px] text-slate-500 leading-tight block">C, G, Am, Fの王道進行。J-POPらしくお洒落なのに繰り返しで簡単。</span>
+                            </div>
+                        </label>
+                        <label class="bg-white p-3 rounded-lg border border-slate-200 hover:border-emerald-500 cursor-pointer flex flex-col justify-between transition-all">
+                            <input type="radio" name="playLevel" value="auto" onclick="handlePlayLevelChange('auto')" class="sr-only">
+                            <div>
+                                <span class="font-black text-slate-800 text-xs block mb-1">③ AIにおまかせ</span>
+                                <span class="text-[11px] text-slate-500 leading-tight block">コード進行の制限は設けず、AIにドラマチックな編曲や転調を委ねます。</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+                        <h3 class="text-xs font-bold text-slate-700 flex items-center gap-1.5"><i data-lucide="music-4" class="w-4 h-4 text-blue-500"></i>音楽スタイル</h3>
+                        <div class="space-y-2">
+                            <div>
+                                <label class="text-[11px] font-semibold text-slate-500">ジャンル</label>
+                                <select id="simple-genre" onchange="handleSettingChange('genre', this.value)" class="w-full p-2 bg-white border border-slate-300 rounded-md text-xs outline-none"></select>
+                            </div>
+                            <div>
+                                <label class="text-[11px] font-semibold text-slate-500">テンポ</label>
+                                <select id="simple-tempo" onchange="handleSettingChange('tempo', this.value)" class="w-full p-2 bg-white border border-slate-300 rounded-md text-xs outline-none"></select>
+                            </div>
+                            <div>
+                                <label class="text-[11px] font-semibold text-slate-500">ムード</label>
+                                <select id="simple-
     </header>
 
     <main class="flex-1 w-full">
