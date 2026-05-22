@@ -454,7 +454,7 @@
             { id: 'castanet', label: 'カスタネット', pattern: 'タン・タン・タン・うん', beats: [1, 1, 1, 0], emoji: '🔴' },
             { id: 'tambourine', label: 'タンバリン', pattern: 'タタ・タン・タタ・タン', beats: [1, 1, 1, 1], double: [0, 2], emoji: '🪘' },
             { id: 'triangle', label: 'トライアングル', pattern: 'チーン・うん・チーン・うん', beats: [1, 0, 1, 0], emoji: '🔺' },
-            { id: 'woodxyl', label: 'もくぎょ（木琴）', pattern: 'トン・トン・トト・トン', beats: [1, 1, 1, 1], double: [2], emoji: '🪵' }
+            { id: 'woodxyl', label: '木琴、鉄琴', pattern: 'トン・トン・トト・トン', beats: [1, 1, 1, 1], double: [2], emoji: '🪵' }
         ];
 
         // --- 状態管理 ---
@@ -657,44 +657,15 @@
             saveStateToLocalStorage();
         }
 
-        // --- せんせいモード: タブ切り替え ---
-        function switchTeacherTab(tab) {
-            state.teacherTab = tab;
-            saveStateToLocalStorage();
-
-            const btnSimple = document.getElementById('btn-teacher-simple');
-            const btnAdv = document.getElementById('btn-teacher-adv');
-            const panelSimple = document.getElementById('panel-teacher-simple');
-            const panelAdv = document.getElementById('panel-teacher-adv');
-
-            if (tab === 'simple') {
-                btnSimple.className = "flex-1 p-4 rounded-xl border-2 font-bold transition-all border-blue-500 bg-blue-50 text-blue-900";
-                btnAdv.className = "flex-1 p-4 rounded-xl border-2 font-bold transition-all border-slate-200 text-slate-500 active:bg-slate-50";
-                panelSimple.classList.remove('hidden-screen');
-                panelAdv.classList.add('hidden-screen');
-            } else {
-                btnSimple.className = "flex-1 p-4 rounded-xl border-2 font-bold transition-all border-slate-200 text-slate-500 active:bg-slate-50";
-                btnAdv.className = "flex-1 p-4 rounded-xl border-2 font-bold transition-all border-emerald-500 bg-emerald-50 text-emerald-900";
-                panelSimple.classList.add('hidden-screen');
-                panelAdv.classList.remove('hidden-screen');
-            }
-            updatePrompts();
-        }
-
-        // --- せんせいモード: セレクトボックス初期化 ---
         function initSelects() {
-            const selects = {
-                'genre': options.genres,
-                'tempo': options.tempos,
-                'mood': options.moods,
-                'vocalType': options.vocalTypes,
-                'vocalTone': options.vocalTones
+            const mapping = {
+                'genre': options.genres, 'tempo': options.tempos, 'mood': options.moods,
+                'vocalType': options.vocalTypes, 'vocalTone': options.vocalTones
             };
-            
-            for (const [key, opts] of Object.entries(selects)) {
+            for (const [key, list] of Object.entries(mapping)) {
                 const el = document.getElementById(`simple-${key}`);
                 if(el) {
-                    el.innerHTML = opts.map(o => `<option value="${o.id}">${o.label}</option>`).join('');
+                    el.innerHTML = list.map(o => `<option value="${o.id}">${o.label}</option>`).join('');
                 }
             }
         }
@@ -900,7 +871,7 @@ ${state.lyrics || '(※ここに歌詞が入力されます)'}`;
                 const fillColor = isPressed ? '#10B981' : '#FFFFFF';
                 svgContent += `<rect x="${k.x}" y="5" width="27" height="110" rx="3" fill="${fillColor}" stroke="#94A3B8" stroke-width="1.5" />`;
                 if (isPressed) {
-                    svgContent += `<circle cx="${k.x + 13.5}" cy="95" r="5" fill="#065F46" />`;
+                    svgContent += `<circle cx="${k.x + 13.5}" cy="95" r="5" fill="#047857" />`;
                 }
             });
 
