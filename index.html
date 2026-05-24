@@ -211,4 +211,969 @@
                             </div>
                             <div class="space-y-1">
                                 <label class="text-xs font-semibold text-slate-500">テンポ</label>
-               
+                                <select id="simple-tempo" onchange="handleSettingChange('simple', 'tempo', this.value)" class="w-full p-3 text-sm bg-white border border-slate-300 rounded-lg focus:border-blue-500 outline-none"></select>
+                            </div>
+                            <div class="space-y-1">
+                                <label class="text-xs font-semibold text-slate-500">ムード</label>
+                                <select id="simple-mood" onchange="handleSettingChange('simple', 'mood', this.value)" class="w-full p-3 text-sm bg-white border border-slate-300 rounded-lg focus:border-blue-500 outline-none"></select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-amber-50 p-5 rounded-xl border border-amber-200">
+                        <h3 class="text-sm font-bold text-amber-900 mb-3 flex items-center gap-2">
+                            <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/></svg>
+                            ボーカル設定（ブレ防止機能付き）
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="space-y-1">
+                                <label class="text-xs font-semibold text-amber-800">構成（人数・性別）</label>
+                                <select id="simple-vocalType" onchange="handleSettingChange('simple', 'vocalType', this.value)" class="w-full p-3 text-sm bg-white border border-amber-300 rounded-lg focus:border-amber-500 outline-none"></select>
+                            </div>
+                            <div class="space-y-1">
+                                <label class="text-xs font-semibold text-amber-800">声質・トーン</label>
+                                <select id="simple-vocalTone" onchange="handleSettingChange('simple', 'vocalTone', this.value)" class="w-full p-3 text-sm bg-white border border-amber-300 rounded-lg focus:border-amber-500 outline-none"></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="panel-teacher-adv" class="space-y-6 hidden-screen">
+                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="space-y-1"><label class="text-xs font-semibold text-slate-600">ジャンル</label><input type="text" id="adv-genre" oninput="handleSettingChange('adv', 'genre', this.value)" class="w-full p-3 text-sm border rounded-lg outline-none focus:border-emerald-500" /></div>
+                        <div class="space-y-1"><label class="text-xs font-semibold text-slate-600">テンポ</label><input type="text" id="adv-tempo" oninput="handleSettingChange('adv', 'tempo', this.value)" class="w-full p-3 text-sm border rounded-lg outline-none focus:border-emerald-500" /></div>
+                        <div class="space-y-1"><label class="text-xs font-semibold text-slate-600">拍子・リズム</label><div class="flex gap-2"><input type="text" id="adv-timeSignature" placeholder="例: 4/4拍子" oninput="handleSettingChange('adv', 'timeSignature', this.value)" class="w-1/3 p-3 text-sm border rounded-lg outline-none focus:border-emerald-500" /><input type="text" id="adv-rhythm" placeholder="例: 8ビート" oninput="handleSettingChange('adv', 'rhythm', this.value)" class="w-2/3 p-3 text-sm border rounded-lg outline-none focus:border-emerald-500" /></div></div>
+                        <div class="space-y-1"><label class="text-xs font-semibold text-slate-600">キー (調)</label><input type="text" id="adv-key" placeholder="演奏しやすいCメジャー(ハ長調)を推奨" oninput="handleSettingChange('adv', 'key', this.value)" class="w-full p-3 text-sm border rounded-lg outline-none focus:border-emerald-500" /></div>
+                    </div>
+
+                    <div class="bg-amber-50 p-5 rounded-xl border border-amber-200 grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="space-y-1"><label class="text-xs font-semibold text-amber-900">メインボーカル</label><input type="text" id="adv-vocalMain" oninput="handleSettingChange('adv', 'vocalMain', this.value)" class="w-full p-3 text-sm border rounded-lg outline-none focus:border-amber-500" /></div>
+                        <div class="space-y-1"><label class="text-xs font-semibold text-amber-900">声質</label><input type="text" id="adv-vocalTone" oninput="handleSettingChange('adv', 'vocalTone', this.value)" class="w-full p-3 text-sm border rounded-lg outline-none focus:border-amber-500" /></div>
+                        <div class="space-y-1"><label class="text-xs font-semibold text-amber-900">コーラス・ハモリ</label><input type="text" id="adv-vocalChorus" oninput="handleSettingChange('adv', 'vocalChorus', this.value)" class="w-full p-3 text-sm border rounded-lg outline-none focus:border-amber-500" /></div>
+                        <div class="space-y-1">
+                            <label class="text-xs font-bold text-red-700 flex items-center gap-1">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 16h.01"/></svg>
+                                禁止事項 (絶対に入れない要素)
+                            </label>
+                            <input type="text" id="adv-vocalNegative" placeholder="例: 男性の声" oninput="handleSettingChange('adv', 'vocalNegative', this.value)" class="w-full p-3 text-sm border border-red-300 rounded-lg focus:border-red-500 outline-none" />
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="bg-white rounded-xl shadow-sm p-6 border border-slate-100">
+                <h2 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+                    <span class="bg-blue-100 text-blue-800 rounded-lg w-7 h-7 flex items-center justify-center text-sm">3</span>歌詞の確認
+                </h2>
+                <div class="space-y-2">
+                    <textarea id="teacher-textarea-lyrics" oninput="handleLyricsChange(this.value)" class="w-full h-32 p-3 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:border-blue-500 outline-none resize-none" placeholder="こどもたちが作った歌詞がここに自動同期されます。"></textarea>
+                </div>
+            </section>
+
+            <section class="bg-slate-800 text-white rounded-2xl shadow-md p-6 no-print">
+                <h2 class="text-lg font-bold mb-4 flex items-center gap-2 text-white">
+                    <span class="bg-blue-500 text-white rounded-lg w-7 h-7 flex items-center justify-center text-sm">4</span>完成したプロンプト
+                </h2>
+                
+                <div class="space-y-6">
+                    <div class="bg-slate-900 rounded-xl border border-slate-700 overflow-hidden">
+                        <div class="bg-slate-800/80 p-4 border-b border-slate-700 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                            <h3 class="text-base font-bold flex items-center gap-2 text-blue-300"><span class="w-1.5 h-6 bg-blue-500 rounded-full block"></span>楽曲生成プロンプト（丸ごと一曲分指示）</h3>
+                            <button id="btn-copy-prompt" onclick="copyPrompt()" class="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all bg-white text-slate-800 active:scale-95 shadow-md">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7v12a2 2 0 002 2h10a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 10H5a2 2 0 01-2-2V5a2 2 0 012-2h10a2 2 0 012 2v3m2 4H11"/></svg>
+                                プロンプトをコピーする
+                            </button>
+                        </div>
+                        <div class="p-4 overflow-x-auto"><pre id="prompt-output" class="text-xs font-mono whitespace-pre-wrap text-slate-300 leading-relaxed max-h-72 overflow-y-auto"></pre></div>
+                    </div>
+                </div>
+
+                <div class="mt-6">
+                    <a href="https://gemini.google.com/" target="_blank" rel="noopener noreferrer" class="w-full flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl text-sm font-bold transition-all bg-blue-600 text-white hover:bg-blue-700 active:scale-95 shadow-md">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                        Google Geminiを開く (別タブ)
+                    </a>
+                    <div class="text-xs font-bold text-center mt-2.5 text-blue-300">
+                        ※実際にGeminiにプロンプトを入力する際は、必ず学校のGoogle Workspaceの『Gemini Pro』モードを選択してください。
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div id="screen-ensemble" class="hidden-screen max-w-7xl mx-auto space-y-6 pb-12 p-4 md:p-8 print-layout">
+            <div class="bg-white rounded-[2rem] shadow-md p-6 md:p-8 border-2 border-emerald-400">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 border-b border-slate-100 pb-4 no-print">
+                    <div>
+                        <h2 class="text-xl md:text-2xl font-black text-emerald-800 flex items-center gap-2">
+                            <svg class="w-6 h-6 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                            みんなで合奏モード（楽譜スクリーン）
+                        </h2>
+                        <p class="text-xs text-slate-500 mt-1">
+                            歌詞の上にコードが自動配置されます。大画面投影や印刷にも最適化された横幅いっぱいの広々レイアウトです。
+                        </p>
+                    </div>
+                    <button onclick="window.print()" class="bg-emerald-500 active:bg-emerald-600 active:scale-95 text-white text-xs font-bold px-5 py-3 rounded-full flex items-center gap-2 shadow-md transition-all">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+                        この楽譜シートを印刷・PDF保存
+                    </button>
+                </div>
+
+                <div class="mb-6 p-5 bg-emerald-50/50 border-2 border-dashed border-emerald-200 rounded-2xl no-print">
+                    <label class="block text-sm font-black text-emerald-800 mb-2 flex items-center gap-1.5">
+                        <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                        【先生向け】AIが作成した本格的な歌詞をここに貼り付けてください
+                    </label>
+                    <textarea id="ensemble-textarea-lyrics" oninput="handleEnsembleLyricsChange(this.value)" placeholder="GeminiなどのAIが出力した、完成した本格的な歌詞（純粋な歌詞行だけのテキスト）をここにペーストすると、下のコード楽譜に自動反映されます。" class="w-full h-24 p-4 text-sm bg-white border border-emerald-200 rounded-xl outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 resize-none font-bold text-slate-700"></textarea>
+                    <p class="text-[10px] text-emerald-700 mt-1.5">※本格歌詞がペーストされるまでは、自動的に子供モードで書いた言葉の羅列が表示されます。</p>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-inner p-6 md:p-8 border border-slate-100 min-h-[220px]">
+                    <div id="chord-lyrics-display" class="font-mono text-xl md:text-3xl leading-loose whitespace-pre-wrap text-slate-800 space-y-6 flex flex-col justify-start">
+                        </div>
+                </div>
+
+                <div class="mt-8 bg-slate-900 text-white rounded-2xl p-6 shadow-xl space-y-6 instrument-selector-zone no-print">
+                    <div class="flex gap-2 bg-slate-800 p-1.5 rounded-xl border border-slate-700">
+                        <button id="instrument-tab-piano" onclick="switchInstrumentType('piano')" class="flex-1 py-3 rounded-lg font-black text-sm text-center bg-white text-slate-900 shadow-sm flex items-center justify-center gap-2 transition-all">
+                            <svg class="w-4 h-4 text-slate-800" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+                            鍵盤コードガイド
+                        </button>
+                        <button id="instrument-tab-percussion" onclick="switchInstrumentType('percussion')" class="flex-1 py-3 rounded-lg font-black text-sm text-center text-slate-400 flex items-center justify-center gap-2 transition-all">
+                            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 22c5.523 0 10-2.239 10-5V7c0-2.761-4.477-5-10-5S2 4.239 2 7v10c0 2.761 4.477 5 10 5z"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 12c5.523 0 10-1.791 10-4S17.523 4 12 4 2 5.791 2 8s4.477 4 10 4z"/><path stroke-linecap="round" stroke-linejoin="round" d="M7 10.5V17M17 10.5V17"/></svg>
+                            打楽器リズムガイド
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                        <div class="lg:col-span-4 space-y-4">
+                            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-2">
+                                <svg class="w-3.5 h-3.5 text-amber-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L11 3z"/></svg>
+                                ガイド表示の切り替え
+                            </h3>
+                            
+                            <div id="piano-guide-panel" class="flex flex-wrap gap-2">
+                                </div>
+
+                            <div id="percussion-guide-panel" class="hidden-screen flex flex-col gap-3">
+                                <div id="percussion-select-buttons" class="flex flex-wrap gap-2">
+                                    </div>
+                            </div>
+                        </div>
+
+                        <div class="lg:col-span-8 bg-slate-800 p-5 rounded-2xl border border-slate-700 flex justify-center items-center">
+                            <div class="w-full flex flex-col items-center">
+                                <div id="visual-guide-title" class="text-xs font-black text-emerald-400 mb-3 tracking-wide uppercase"></div>
+                                <div class="w-full max-w-lg bg-slate-900/60 p-4 rounded-xl border border-slate-700/50 flex justify-center items-center">
+                                    <svg id="instrument-svg" viewBox="0 0 280 120" class="w-full h-auto"></svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // --- データ定義 ---
+        const wordBank = [
+            { category: 'あいさつ', color: 'bg-orange-100 text-orange-800 hover:bg-orange-200 border-orange-300', words: ['おはよう', 'こんにちは', 'ありがとう', 'よろしくね', 'またあした'] },
+            { category: 'がっこう', color: 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200 border-emerald-300', words: ['きょうしつ', 'こくばん', 'ノート', 'チャイム', 'あたらしいうた', 'ともだち', 'せんせい'] },
+            { category: 'きもち', color: 'bg-pink-100 text-pink-800 hover:bg-pink-200 border-pink-300', words: ['どきどき', 'わくわく', 'きらきら', 'えがお', 'うれしい', 'たのしい', 'だいすき'] },
+            { category: 'うごき', color: 'bg-blue-100 text-blue-800 hover:bg-blue-200 border-blue-300', words: ['てをつなぐ', 'はしりだす', 'うたう', 'わらう', 'たすけあう', 'みつける', 'ふみだす'] },
+            { category: 'もくひょう', color: 'bg-purple-100 text-purple-800 hover:bg-purple-200 border-purple-300', words: ['あきらめない', 'みんなでいっしょに', 'ぜんりょくで', 'みらいへ', 'ゆめをみる', 'ち力をあわせて'] }
+        ];
+
+        const options = {
+            genres: [
+                { id: 'jpop', label: 'J-POP風', detail: '現代的なJ-POP, キャッチーなメロディ, スタンダードなポップスアレンジ' },
+                { id: 'chorus', label: 'ピアノ伴奏の合唱曲風', detail: '学校の合唱曲スタイル, アコースティック, 叙情的なコード進行' },
+                { id: 'brass', label: '吹奏楽風', detail: '吹奏楽アレンジ, ブラスバンド, 壮大なアンサンブル' },
+                { id: 'acoustic', label: 'アコースティック（ギター弾き語り風）', detail: 'アコースティックポップ, オーガニックな響き, アンプラグド' }
+            ],
+            tempos: [
+                { id: 'slow', label: 'ゆったり', detail: 'BPM 70-80程度, バラードテンポ, ゆったりとしたノリ' },
+                { id: 'mid', label: 'ミドルテンポ', detail: 'BPM 100-110程度, アンダンテ, 歩くような安定したテンポ' },
+                { id: 'mid_fast', label: '少し早め', detail: 'BPM 120-130程度, モデラート, 軽快なテンポ' }
+            ],
+            moods: [
+                { id: 'bright', label: '明るく元気', detail: 'メジャーキー(長調)中心, ポジティブ, エネルギッシュ, 希望に満ちた雰囲気' },
+                { id: 'warm', label: '優しい・温かい', detail: '温かみのある音色, 穏やか, 包み込むような優しい雰囲気' },
+                { id: 'epic', label: '壮大・感動的', detail: 'スケール感が大きい, ドラマチック, 卒業式のような感動的な雰囲気' }
+            ],
+            vocalTypes: [
+                { id: 'female_solo', label: '女性ソロ（1名）', detail: '女性ソロボーカル1名のみ', negative: '男性の声、複数人でのコーラス・合唱、ハモリは【絶対に】入れないでください。' },
+                { id: 'male_solo', label: '男性ソロ（1名）', detail: '男性ソロボーカル1名のみ', negative: '女性の声、複数人でのコーラス・合唱、ハモリは【絶対に】入れないでください。' },
+                { id: 'mixed_chorus', label: '男女混声（合唱）', detail: '10代男女の混声合唱', negative: '単独のソロボーカルには【絶対に】しないでください。常に複数人の声が重なるようにしてください。' },
+                { id: 'female_chorus', label: '女性合唱', detail: '女性複数人による同声合唱', negative: '男性の声、単独のソロボーカルは【絶対に】入れないでください。' }
+            ],
+            vocalTones: [
+                { id: 'clear', label: 'クリア・透明感', detail: '透明感のある澄んだ10代の歌声' },
+                { id: 'energetic', label: '元気・力強い', detail: 'エネルギーに満ちた力強い10代の歌声' },
+                { id: 'gentle', label: '優しく語りかける', detail: '優しく温かみのある10代の歌声' }
+            ]
+        };
+
+        // 和音の色定義連動（C: 赤, F: 黄, G: 緑, G7: 黄緑, Am: 青）
+        const chordColors = {
+            'C': { border: 'border-rose-500', bg: 'bg-rose-500', text: 'text-rose-600', activeBg: 'bg-rose-50 text-rose-800 border-rose-500', gradient: 'rose' },
+            'F': { border: 'border-amber-400', bg: 'bg-amber-400', text: 'text-amber-500', activeBg: 'bg-amber-50 text-amber-800 border-amber-400', gradient: 'amber' },
+            'G': { border: 'border-emerald-500', bg: 'bg-emerald-500', text: 'text-emerald-600', activeBg: 'bg-emerald-50 text-emerald-800 border-emerald-500', gradient: 'emerald' },
+            'G7': { border: 'border-lime-500', bg: 'bg-lime-500', text: 'text-lime-600', activeBg: 'bg-lime-50 text-lime-800 border-lime-500', gradient: 'lime' },
+            'Am': { border: 'border-blue-500', bg: 'bg-blue-500', text: 'text-blue-600', activeBg: 'bg-blue-50 text-blue-800 border-blue-500', gradient: 'blue' }
+        };
+
+        const pianoChords = {
+            'C': [0, 4, 7],      // ド・ミ・ソ
+            'F': [5, 9, 12],     // ファ・ラ・ド
+            'G': [2, 7, 11],     // レ・ソ・シ
+            'G7': [2, 5, 7, 11], // レ・ファ・ソ・シ
+            'Am': [0, 4, 9]      // ド・ミ・ラ
+        };
+
+        const percussionOptions = [
+            { id: 'castanet', label: 'カスタネット', pattern: 'タン・タン・タン・うん', beats: [1, 1, 1, 0], emoji: '🔴' },
+            { id: 'tambourine', label: 'タンバリン', pattern: 'タタ・タン・タタ・タン', beats: [1, 1, 1, 1], double: [0, 2], emoji: '🪘' },
+            { id: 'triangle', label: 'トライアングル', pattern: 'チーン・うん・チーン・うん', beats: [1, 0, 1, 0], emoji: '🔺' },
+            { id: 'woodxyl', label: '木琴、鉄琴', pattern: 'トン・トン・トト・トン', beats: [1, 1, 1, 1], double: [2], emoji: '🪵' }
+        ];
+
+        // --- 状態管理 ---
+        let state = {
+            lyrics: '',
+            ensembleLyrics: '', // AIによってあとから作られる本格的な歌詞
+            freeImage: '',
+            playLevel: 'simple3',
+            instrumentType: 'piano',
+            activeChord: 'C',
+            activePercussion: 'castanet',
+            activeLineIndex: 0, // 演奏で現在フォーカスしている歌詞の行インデックス
+            teacherTab: 'simple',
+            simple: { genre: 'jpop', tempo: 'mid', mood: 'bright', vocalType: 'female_solo', vocalTone: 'clear' },
+            adv: { genre: '', tempo: '', timeSignature: '4/4拍子', rhythm: '', key: '', mood: '', instruments: '', texture: '', vocalMain: '', vocalChorus: '', vocalTone: '', vocalNegative: '' }
+        };
+
+        // --- 初期化処理 ---
+        window.onload = () => {
+            loadStateFromLocalStorage();
+            renderWordBank();
+            initSelects();
+            applyStateToUI();
+            
+            // フルスクリーン状態の監視
+            document.addEventListener('fullscreenchange', updateFullScreenIcon);
+            document.addEventListener('webkitfullscreenchange', updateFullScreenIcon);
+        };
+
+        // --- LocalStorage ---
+        function saveStateToLocalStorage() {
+            localStorage.setItem('class_song_app_state', JSON.stringify(state));
+        }
+
+        function loadStateFromLocalStorage() {
+            const saved = localStorage.getItem('class_song_app_state');
+            if (saved) {
+                try {
+                    state = { ...state, ...JSON.parse(saved) };
+                } catch (e) {
+                    console.error("Failed to parse local storage", e);
+                }
+            }
+        }
+
+        function resetAllDataWithConfirm() {
+            const res = confirm("これまでに作った歌詞や設定項目をすべて消去して、新しい曲を作り始めますか？\n（現在記憶されているデータは完全にクリアされます）");
+            if (res) {
+                localStorage.removeItem('class_song_app_state');
+                state.lyrics = '';
+                state.ensembleLyrics = '';
+                state.freeImage = '';
+                applyStateToUI();
+                showScreen('top');
+                alert("データをリセットしました。新しい曲を作りましょう！");
+            }
+        }
+
+        function applyStateToUI() {
+            document.getElementById('child-textarea-lyrics').value = state.lyrics;
+            document.getElementById('teacher-textarea-lyrics').value = state.lyrics;
+            document.getElementById('common-free-image').value = state.freeImage;
+            
+            // 合奏用の本格歌詞の復元
+            const ensembleArea = document.getElementById('ensemble-textarea-lyrics');
+            if (ensembleArea) {
+                ensembleArea.value = state.ensembleLyrics || '';
+            }
+
+            const radios = document.getElementsByName('playLevel');
+            radios.forEach(r => { if(r.value === state.playLevel) r.checked = true; });
+
+            // 先生モード：簡単モードの復元
+            document.getElementById('simple-genre').value = state.simple.genre;
+            document.getElementById('simple-tempo').value = state.simple.tempo;
+            document.getElementById('simple-mood').value = state.simple.mood;
+            document.getElementById('simple-vocalType').value = state.simple.vocalType;
+            document.getElementById('simple-vocalTone').value = state.simple.vocalTone;
+
+            // 先生モード：詳細モードの復元
+            const advGenreEl = document.getElementById('adv-genre');
+            if(advGenreEl) advGenreEl.value = state.adv.genre;
+            const advTempoEl = document.getElementById('adv-tempo');
+            if(advTempoEl) advTempoEl.value = state.adv.tempo;
+            const advTimeSignatureEl = document.getElementById('adv-timeSignature');
+            if(advTimeSignatureEl) advTimeSignatureEl.value = state.adv.timeSignature;
+            const advRhythmEl = document.getElementById('adv-rhythm');
+            if(advRhythmEl) advRhythmEl.value = state.adv.rhythm;
+            const advKeyEl = document.getElementById('adv-key');
+            if(advKeyEl) advKeyEl.value = state.adv.key;
+            const advVocalMainEl = document.getElementById('adv-vocalMain');
+            if(advVocalMainEl) advVocalMainEl.value = state.adv.vocalMain;
+            const advVocalToneEl = document.getElementById('adv-vocalTone');
+            if(advVocalToneEl) advVocalToneEl.value = state.adv.vocalTone;
+            const advVocalChorusEl = document.getElementById('adv-vocalChorus');
+            if(advVocalChorusEl) advVocalChorusEl.value = state.adv.vocalChorus;
+            const advVocalNegativeEl = document.getElementById('adv-vocalNegative');
+            if(advVocalNegativeEl) advVocalNegativeEl.value = state.adv.vocalNegative;
+
+            // タブの表示状態を復元
+            switchTeacherTab(state.teacherTab);
+
+            switchInstrumentType(state.instrumentType);
+            updatePrompts();
+            updateChordSheet();
+        }
+
+        // --- フルスクリーン制御 ---
+        function toggleFullScreen() {
+            if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+                if (document.documentElement.requestFullscreen) {
+                    document.documentElement.requestFullscreen();
+                } else if (document.documentElement.webkitRequestFullscreen) {
+                    document.documentElement.webkitRequestFullscreen();
+                }
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                }
+            }
+        }
+
+        function updateFullScreenIcon() {
+            const isFull = document.fullscreenElement || document.webkitFullscreenElement;
+            const pathMax = "M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3";
+            const pathMin = "M8 3v3a2 2 0 01-2 2H3m18 0h-3a2 2 0 01-2-2V3m0 18v-3a2 2 0 012-2h3M3 16h3a2 2 0 012 2v3";
+            const pathData = isFull ? pathMin : pathMax;
+            
+            const svgs = document.querySelectorAll('#btn-fullscreen svg, #screen-top button[onclick="toggleFullScreen()"] svg');
+            svgs.forEach(svg => {
+                const path = svg.querySelector('path');
+                if(path) path.setAttribute('d', pathData);
+            });
+        }
+
+        // --- 画面遷移 ---
+        function showScreen(screenId) {
+            document.getElementById('screen-top').classList.add('hidden-screen');
+            document.getElementById('screen-child').classList.add('hidden-screen');
+            document.getElementById('screen-teacher').classList.add('hidden-screen');
+            document.getElementById('screen-ensemble').classList.add('hidden-screen');
+            document.getElementById('main-header').classList.add('hidden-screen');
+
+            if (screenId === 'top') {
+                document.getElementById('screen-top').classList.remove('hidden-screen');
+            } else {
+                document.getElementById('main-header').classList.remove('hidden-screen');
+                document.getElementById(`screen-${screenId}`).classList.remove('hidden-screen');
+                
+                // 先生モードのみリセットボタンを表示
+                const resetBtn = document.getElementById('btn-reset-data');
+                if (resetBtn) {
+                    if (screenId === 'teacher') {
+                        resetBtn.classList.remove('hidden');
+                    } else {
+                        resetBtn.classList.add('hidden');
+                    }
+                }
+                
+                if(screenId === 'ensemble') {
+                    switchInstrumentType(state.instrumentType);
+                }
+            }
+        }
+
+        // --- こどもモード: ワードバンク描画 ---
+        function renderWordBank() {
+            const container = document.getElementById('word-bank-container');
+            let html = '';
+            wordBank.forEach(group => {
+                html += `
+                    <div>
+                        <h3 class="text-lg font-black text-slate-500 mb-3 pl-2 flex items-center gap-2">
+                          <span class="w-2 h-2 rounded-full bg-slate-300"></span>${group.category}
+                        </h3>
+                        <div class="flex flex-wrap gap-3">
+                `;
+                group.words.forEach(word => {
+                    html += `<button onclick="appendWord('${word}')" class="px-5 py-3 md:px-6 md:py-4 rounded-2xl text-lg md:text-xl font-bold transition-transform active:scale-90 border-2 shadow-sm ${group.color}">${word}</button>`;
+                });
+                html += `</div></div>`;
+            });
+            container.innerHTML = html;
+        }
+
+        // --- 状態変更ハンドラ群 ---
+        function appendWord(word) {
+            const space = ' ';
+            const val = state.lyrics;
+            state.lyrics = val + (val.length > 0 && !val.endsWith('\n') ? space : '') + word;
+            document.getElementById('child-textarea-lyrics').value = state.lyrics;
+            document.getElementById('teacher-textarea-lyrics').value = state.lyrics;
+            
+            // 合奏用歌詞が未入力か初期状態の場合、自動的に同期して表示されるようにする
+            if (!state.ensembleLyrics || state.ensembleLyrics === '' || state.ensembleLyrics === val) {
+                state.ensembleLyrics = state.lyrics;
+                const ensembleArea = document.getElementById('ensemble-textarea-lyrics');
+                if (ensembleArea) ensembleArea.value = state.lyrics;
+            }
+
+            updatePrompts();
+            updateChordSheet();
+            saveStateToLocalStorage();
+        }
+
+        // 3モードで相互にリアルタイム保存されるように変更
+        function handleLyricsChange(value) {
+            state.lyrics = value;
+            document.getElementById('child-textarea-lyrics').value = value;
+            document.getElementById('teacher-textarea-lyrics').value = value;
+            
+            // 合奏用歌詞が未入力か初期状態の場合、自動的に同期して表示されるようにする
+            if (!state.ensembleLyrics || state.ensembleLyrics === '' || state.ensembleLyrics === value) {
+                state.ensembleLyrics = value;
+                const ensembleArea = document.getElementById('ensemble-textarea-lyrics');
+                if (ensembleArea) ensembleArea.value = value;
+            }
+            
+            updatePrompts();
+            updateChordSheet();
+            saveStateToLocalStorage();
+        }
+
+        function handleEnsembleLyricsChange(value) {
+            state.ensembleLyrics = value;
+            updateChordSheet();
+            saveStateToLocalStorage();
+        }
+
+        function handleFreeImageChange(value) {
+            state.freeImage = value;
+            updatePrompts();
+            saveStateToLocalStorage();
+        }
+
+        function handlePlayLevelChange(level) {
+            state.playLevel = level;
+            updatePrompts();
+            updateChordSheet();
+            saveStateToLocalStorage();
+        }
+
+        // 詳細・簡単モードでの各種設定値の変更
+        function handleSettingChange(mode, key, value) {
+            state[mode][key] = value;
+            updatePrompts();
+            saveStateToLocalStorage();
+        }
+
+        // --- せんせいモード: タブ切り替え ---
+        function switchTeacherTab(tab) {
+            state.teacherTab = tab;
+            saveStateToLocalStorage();
+
+            const btnSimple = document.getElementById('btn-teacher-simple');
+            const btnAdv = document.getElementById('btn-teacher-adv');
+            const panelSimple = document.getElementById('panel-teacher-simple');
+            const panelAdv = document.getElementById('panel-teacher-adv');
+
+            if (tab === 'simple') {
+                btnSimple.className = "flex-1 p-4 rounded-xl border-2 font-bold transition-all border-blue-500 bg-blue-50 text-blue-900";
+                btnAdv.className = "flex-1 p-4 rounded-xl border-2 font-bold transition-all border-slate-200 text-slate-500 active:bg-slate-50";
+                panelSimple.classList.remove('hidden-screen');
+                panelAdv.classList.add('hidden-screen');
+            } else {
+                btnSimple.className = "flex-1 p-4 rounded-xl border-2 font-bold transition-all border-slate-200 text-slate-500 active:bg-slate-50";
+                btnAdv.className = "flex-1 p-4 rounded-xl border-2 font-bold transition-all border-emerald-500 bg-emerald-50 text-emerald-900";
+                panelSimple.classList.add('hidden-screen');
+                panelAdv.classList.remove('hidden-screen');
+            }
+            updatePrompts();
+        }
+
+        // --- せんせいモード: セレクトボックス初期化 ---
+        function initSelects() {
+            const mapping = {
+                'genre': options.genres, 'tempo': options.tempos, 'mood': options.moods,
+                'vocalType': options.vocalTypes, 'vocalTone': options.vocalTones
+            };
+            for (const [key, list] of Object.entries(mapping)) {
+                const el = document.getElementById(`simple-${key}`);
+                if(el) {
+                    el.innerHTML = list.map(o => `<option value="${o.id}">${o.label}</option>`).join('');
+                }
+            }
+        }
+
+        // --- 一曲完結プロンプト生成ロジック（本格歌詞・テキスト出力指示を厳格化） ---
+        function generatePromptText() {
+            let musicSettings = '';
+            let vocalRules = '';
+            
+            let imageInstruction = '';
+            if (state.freeImage && state.freeImage.trim() !== '') {
+                imageInstruction = `・【全体的な曲のイメージ】：${state.freeImage}\n`;
+            }
+
+            let playLevelInstruction = '';
+            if (state.playLevel === 'simple3') {
+                playLevelInstruction = `・【伴奏コード進行の絶対制約】：主要三和音である【Cメジャー(C), Fメジャー(F), Gメジャー(GまたはG7) の3コード】のみで演奏できるように楽曲を構成してください。複雑なジャズコードやマイナーコードは一切禁止します。\n・【打楽器合奏への配慮】：カスタネットやトライアングルなど、子供たちが学校の授業で使用する基本的な教育用パーカッションが拍を安定して捉えられるよう、明瞭で等速の4つ打ちドラム・リズムパターンにしてください。`;
+            } else if (state.playLevel === 'pop4') {
+                playLevelInstruction = `・【伴奏コード進行の絶対制約】：シンプルで印象的なJ-POP王道4コード【C - G - Am - F】のループ構造をベースとして楽曲を構成してください。子供たちがキーボード等で繰り返し演奏可能で弾きやすいループ進行にしてください。\n・【打楽器合奏への配慮】：シンコペーションや弾むようなスタッカートを適宜取り入れ、木琴、鉄琴、タンバリンを叩く手が弾むような楽しく軽快なリズムパターンを伴奏全体にデザインしてください。`;
+            } else {
+                playLevelInstruction = `・【コード進行】：AIがメロディに合わせて最適なコード進行を自由に選択して、豊かでドラマチックな和声構成にしてください。`;
+            }
+            
+            if (state.teacherTab === 'simple') {
+                const selectedGenre = options.genres.find(o => o.id === state.simple.genre)?.detail || '';
+                const selectedTempo = options.tempos.find(o => o.id === state.simple.tempo)?.detail || '';
+                const selectedMood = options.moods.find(o => o.id === state.simple.mood)?.detail || '';
+                const vType = options.vocalTypes.find(o => o.id === state.simple.vocalType) || options.vocalTypes[0];
+                const vTone = options.vocalTones.find(o => o.id === state.simple.vocalTone) || options.vocalTones[0];
+
+                vocalRules = `・ボーカル構成：${vType.detail} [Vocal: ${state.simple.vocalType.replace('_', ' ')}]\n・声質・トーン：${vTone.detail}\n・【ボーカルの禁止事項】：${vType.negative}`;
+
+                musicSettings = `${imageInstruction}${playLevelInstruction}\n・ベースジャンル：${selectedGenre}\n・テンポとリズム：${selectedTempo}, 4/4拍子, 安定したビート\n・ムードと調性：${selectedMood}\n・音の質感(ミックス)：クリアな音質,自然なリバーブ`;
+            } else {
+                vocalRules = `・ボーカル構成：${state.adv.vocalMain || '未指定'}\n・声質・トーン：${state.adv.vocalTone || '未指定'}\n・コーラス・ハモリ：${state.adv.vocalChorus || '未指定'}\n・【ボーカルの禁止事項】：${state.adv.vocalNegative || '特になし'}`;
+
+                musicSettings = `${imageInstruction}${playLevelInstruction}\n・ベースジャンル：${state.adv.genre || '未指定'}\n・テンポ：${state.adv.tempo || '未指定'}\n・リズム・拍子：${state.adv.rhythm || '未指定'}, ${state.adv.timeSignature || '4/4拍子'}\n・ムードと調性：${state.adv.mood || '未指定'}, キー:${state.adv.key || '未指定'}\n・使用楽器：${state.adv.instruments || '未指定'}\n・音の質感(ミックス)：${state.adv.texture || 'クリアな音質'}`;
+            }
+
+            return `【タスクの実行手順（必ずこの順番で処理してください）】
+ステップ1: 以下の【子供たちが考えたキーワード】をもとに、楽曲のテーマに沿った本格的な「1番と2番の構成の歌詞」を【新たに作詞】してください。キーワードの羅列をそのまま使うのではなく、意味の通る美しい歌詞に膨らませてください。
+ステップ2: 作成した本格的な歌詞テキストを、独立した「プレーンテキストのコードブロック（\`\`\`text ... \`\`\`）」として出力してください。
+ステップ3: ステップ1で作詞した歌詞と以下の【楽曲生成の厳守事項】をもとに、**必ず実際の音楽（曲）を生成**してください。※テキストで歌詞を出力するだけで終わらず、必ず楽曲生成の機能を実行してオーディオを作成してください。
+
+【楽曲生成の厳守事項】
+# 1. ボーカルの絶対条件（最初から最後まで完全一貫・変更不可）
+${vocalRules}
+
+# 2. 音楽スタイル＆コード進行条件（変更不可）
+${musicSettings}
+
+# 3. 曲の構成と展開
+静かで親しみやすい導入から始まり、サビに向けて少しずつ伴奏の音数やリズムをビルドアップさせ、後半のサビで最も感情豊かに歌い上げて締めくくる「一曲として完全に自己完結したストーリー展開」にしてください。
+
+# 4. 【超厳守】本格的な「歌詞テキスト」の出力フォーマット
+ステップ2で出力する歌詞は、以下のルールを絶対にお守りください。
+出力例：
+\`\`\`text
+（ここにステップ1で作詞した本格的な歌詞を、1行ずつ連続して出力してください）
+（「1番」「2番」「サビ」「Aメロ」「[Verse]」「[Chorus]」などのセクション名、余計な空行、説明メッセージは【絶対に】含めないでください）
+\`\`\`
+
+【子供たちが考えたキーワード】
+${state.lyrics || '(※ここにキーワードが入力されます)'}`;
+        }
+
+        function updatePrompts() {
+            const out = document.getElementById('prompt-output');
+            if(out) out.textContent = generatePromptText();
+        }
+
+        // --- クリップボードコピー ---
+        function copyPrompt() {
+            const text = generatePromptText();
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.position = "fixed";
+            textArea.style.left = "-9999px";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                const btn = document.getElementById('btn-copy-prompt');
+                
+                btn.innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4"/></svg> コピーしました`;
+                btn.classList.add('bg-emerald-50', 'text-emerald-800', 'border-emerald-300');
+                btn.classList.remove('bg-white', 'text-slate-800');
+                
+                setTimeout(() => {
+                    btn.innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7v12a2 2 0 002 2h10a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 10H5a2 2 0 01-2-2V5a2 2 0 012-2h10a2 2 0 012 2v3m2 4H11"/></svg> プロンプトをコピーする`;
+                    btn.classList.remove('bg-emerald-50', 'text-emerald-800', 'border-emerald-300');
+                    btn.classList.add('bg-white', 'text-slate-800');
+                }, 2000);
+            } catch (err) {
+                alert('コピーに失敗しました。');
+            }
+            document.body.removeChild(textArea);
+        }
+
+        // ========================================================
+        // 合奏モード: 楽譜シートの描画＆各種ビジュアルガイド制御
+        // ========================================================
+        function switchInstrumentType(type) {
+            state.instrumentType = type;
+            saveStateToLocalStorage();
+            
+            const tabPiano = document.getElementById('instrument-tab-piano');
+            const tabPercussion = document.getElementById('instrument-tab-percussion');
+            const panelPiano = document.getElementById('piano-guide-panel');
+            const panelPercussion = document.getElementById('percussion-guide-panel');
+
+            if (type === 'piano') {
+                tabPiano.className = "flex-1 py-3 rounded-lg font-black text-sm text-center bg-white text-slate-900 shadow-sm flex items-center justify-center gap-2 transition-all";
+                tabPercussion.className = "flex-1 py-3 rounded-lg font-black text-sm text-center text-slate-400 flex items-center justify-center gap-2 transition-all";
+                panelPiano.classList.remove('hidden-screen');
+                panelPercussion.classList.add('hidden-screen');
+                renderPianoKeyGuide(state.activeChord);
+            } else {
+                tabPiano.className = "flex-1 py-3 rounded-lg font-black text-sm text-center text-slate-400 flex items-center justify-center gap-2 transition-all";
+                tabPercussion.className = "flex-1 py-3 rounded-lg font-black text-sm text-center bg-white text-slate-900 shadow-sm flex items-center justify-center gap-2 transition-all";
+                panelPiano.classList.add('hidden-screen');
+                panelPercussion.classList.remove('hidden-screen');
+                renderPercussionSelectors();
+                selectPercussion(state.activePercussion);
+            }
+            updateChordSheet();
+        }
+
+        // 指定された行のコード・リズムをアクティブにする(児童の演奏サポートタップ機能)
+        function focusLine(index, chord) {
+            state.activeLineIndex = index;
+            state.activeChord = chord;
+            saveStateToLocalStorage();
+            
+            // 歌詞全体の背景ハイライトをリアルタイムで掛け替える
+            const lines = document.querySelectorAll('.lyrics-line-container');
+            lines.forEach((line, idx) => {
+                if(idx === index) {
+                    line.classList.add('bg-emerald-50', 'border-emerald-300', 'shadow-inner');
+                    line.classList.remove('bg-transparent', 'border-transparent');
+                } else {
+                    line.classList.remove('bg-emerald-50', 'border-emerald-300', 'shadow-inner');
+                    line.classList.add('bg-transparent', 'border-transparent');
+                }
+            });
+
+            // 鍵盤や打楽器のガイドをそのタップされた行のコードに即座に同期
+            if (state.instrumentType === 'piano') {
+                renderPianoKeyGuide(chord);
+            } else {
+                updateChordSheet(); // 押した時のリズム情報を更新
+            }
+        }
+
+        function updateChordSheet() {
+            const targetArea = document.getElementById('chord-lyrics-display');
+            const buttonArea = document.getElementById('chord-guide-buttons');
+            
+            let activeChords = [];
+            if (state.playLevel === 'simple3') {
+                activeChords = ['C', 'F', 'G'];
+            } else if (state.playLevel === 'pop4') {
+                activeChords = ['C', 'G', 'Am', 'F'];
+            } else {
+                activeChords = ['C', 'Am', 'F', 'G', 'G7'];
+            }
+
+            if(buttonArea && state.instrumentType === 'piano') {
+                buttonArea.innerHTML = activeChords.map(c => {
+                    const cInfo = chordColors[c] || { activeBg: 'bg-emerald-50 text-emerald-800 border-emerald-500' };
+                    const isActive = state.activeChord === c;
+                    const btnClass = isActive ? cInfo.activeBg + ' scale-105 shadow-md font-black ring-2 ring-offset-1 ring-slate-800' : 'bg-white text-slate-700 hover:border-slate-400';
+                    return `<button onclick="renderPianoKeyGuide('${c}')" class="px-3.5 py-2.5 rounded-xl border-2 font-bold transition-all text-sm ${btnClass}">${c}</button>`;
+                }).join('');
+                
+                // 現在のactiveChordが表示されているボタン群にない場合、最初のコードにする
+                if(!activeChords.includes(state.activeChord)) {
+                    renderPianoKeyGuide(activeChords[0]);
+                } else {
+                    renderPianoKeyGuide(state.activeChord);
+                }
+            }
+
+            // 子供たちが作ったキーワードではなく、AIが後から作った本格的な歌詞（ensembleLyrics）を最優先でデジタル伴奏楽譜化する
+            const srcLyrics = state.ensembleLyrics || state.lyrics;
+            
+            if (!srcLyrics || srcLyrics.trim() === '') {
+                targetArea.innerHTML = `<div class="text-slate-400 text-sm font-sans text-center py-8">現在歌詞が空っぽです。「①かしをつくる」画面でことばを入れるか、「③みんなで合奏する」画面上部でAI本格歌詞を貼り付けてください。</div>`;
+                return;
+            }
+
+            const lines = srcLyrics.split('\n');
+            let formattedHtml = '';
+            
+            lines.forEach((line, index) => {
+                if (line.trim() === '') return;
+                
+                let chord1 = activeChords[index % activeChords.length];
+                let chord2 = activeChords[(index + 1) % activeChords.length];
+
+                const colorInfo1 = chordColors[chord1] || { text: 'text-emerald-700' };
+                const colorInfo2 = chordColors[chord2] || { text: 'text-emerald-700' };
+
+                const isCurrentActive = state.activeLineIndex === index;
+                const highlightClass = isCurrentActive ? 'bg-emerald-50 border-emerald-300 shadow-inner' : 'bg-transparent border-transparent';
+                
+                formattedHtml += `
+                    <div onclick="focusLine(${index}, '${chord1}')" class="lyrics-line-container p-3 rounded-2xl border-2 cursor-pointer transition-all ${highlightClass} hover:bg-slate-50 flex flex-col justify-start">
+                `;
+                
+                if (state.instrumentType === 'piano') {
+                    formattedHtml += `<div class="font-black text-sm md:text-base leading-none tracking-widest mb-1.5 select-none text-left flex gap-1 items-center">`;
+                    formattedHtml += `<span class="${colorInfo1.text} bg-slate-100 px-2 py-0.5 rounded-lg font-black border border-slate-200">[ ${chord1} ]</span>`;
+                    formattedHtml += '&nbsp;'.repeat(Math.max(2, Math.floor(line.length * 1.2)));
+                    formattedHtml += `<span class="${colorInfo2.text} bg-slate-50 px-2 py-0.5 rounded-lg font-black border border-slate-200">[ ${chord2} ]</span>`;
+                    formattedHtml += `</div>`;
+                } else {
+                    const percObj = percussionOptions.find(p => p.id === state.activePercussion) || percussionOptions[0];
+                    formattedHtml += `<div class="text-amber-600 font-bold text-xs md:text-sm leading-none mb-1.5 select-none flex items-center gap-1.5 text-left">`;
+                    formattedHtml += `<span>${percObj.emoji} リズムパターン:</span> <span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded text-[10px] font-mono font-black">${percObj.pattern}</span>`;
+                    formattedHtml += `</div>`;
+                }
+                
+                formattedHtml += `<div class="text-slate-900 font-bold text-left text-lg md:text-2xl pl-1">${line}</div>`;
+                formattedHtml += `</div>`;
+            });
+
+            targetArea.innerHTML = formattedHtml;
+        }
+
+        // --- ピアノ鍵盤SVGの描画（色連動強化・コードネームドレミガイド） ---
+        function renderPianoKeyGuide(targetChord) {
+            state.activeChord = targetChord;
+            saveStateToLocalStorage();
+
+            const svg = document.getElementById('instrument-svg');
+            if(!svg || state.instrumentType !== 'piano') return;
+            const pressedKeys = pianoChords[targetChord] || [];
+            
+            const chordInfo = chordColors[targetChord] || { text: 'text-emerald-700', bg: 'bg-emerald-500', gradient: 'emerald' };
+
+            document.getElementById('visual-guide-title').innerHTML = `
+                <div class="flex items-center gap-2 justify-center">
+                    <span>🎹 鍵盤ハーモニカ・オルガン</span>
+                    <span class="px-2.5 py-0.5 rounded-full text-white font-black ${chordInfo.bg}">${targetChord} コード</span>
+                </div>
+            `;
+            
+            const whiteKeys = [
+                { x: 0, index: 0, note: 'ド' }, { x: 28, index: 2, note: 'レ' }, { x: 56, index: 4, note: 'ミ' }, { x: 84, index: 5, note: 'ファ' },
+                { x: 112, index: 7, note: 'ソ' }, { x: 140, index: 9, note: 'ラ' }, { x: 168, index: 11, note: 'シ' }, { x: 196, index: 12, note: 'ド' },
+                { x: 224, index: 14, note: 'レ' }, { x: 252, index: 16, note: 'ミ' }
+            ];
+
+            const blackKeys = [
+                { x: 18, index: 1 }, { x: 46, index: 3 }, { x: 100, index: 6 }, { x: 128, index: 8 },
+                { x: 156, index: 10 }, { x: 214, index: 13 }, { x: 242, index: 15 }
+            ];
+
+            // 立体グラデーション定義を定義
+            let svgContent = `
+                <defs>
+                    <linearGradient id="whiteGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#F8FAFC"/>
+                        <stop offset="90%" stop-color="#E2E8F0"/>
+                        <stop offset="100%" stop-color="#CBD5E1"/>
+                    </linearGradient>
+                    <linearGradient id="blackGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#334155"/>
+                        <stop offset="100%" stop-color="#0F172A"/>
+                    </linearGradient>
+                    <linearGradient id="activeGrad-rose" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#FDA4AF"/>
+                        <stop offset="100%" stop-color="#F43F5E"/>
+                    </linearGradient>
+                    <linearGradient id="activeGrad-amber" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#FDE047"/>
+                        <stop offset="100%" stop-color="#F59E0B"/>
+                    </linearGradient>
+                    <linearGradient id="activeGrad-emerald" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#6EE7B7"/>
+                        <stop offset="100%" stop-color="#10B981"/>
+                    </linearGradient>
+                    <linearGradient id="activeGrad-lime" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#A3E635"/>
+                        <stop offset="100%" stop-color="#84CC16"/>
+                    </linearGradient>
+                    <linearGradient id="activeGrad-blue" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#93C5FD"/>
+                        <stop offset="100%" stop-color="#3B82F6"/>
+                    </linearGradient>
+                    <filter id="glow">
+                        <feGaussianBlur stdDeviation="1.5" result="blur" />
+                        <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                    </filter>
+                </defs>
+            `;
+
+            const gradId = `url(#activeGrad-${chordInfo.gradient})`;
+
+            // 白鍵の描画
+            whiteKeys.forEach(k => {
+                const isPressed = pressedKeys.includes(k.index);
+                const fillColor = isPressed ? gradId : 'url(#whiteGrad)';
+                const strokeColor = isPressed ? '#475569' : '#CBD5E1';
+                const strokeWidth = isPressed ? '2' : '1.5';
+                const filterEffect = isPressed ? 'filter="url(#glow)"' : '';
+                
+                svgContent += `<rect x="${k.x}" y="5" width="27" height="110" rx="4" fill="${fillColor}" stroke="${strokeColor}" stroke-width="${strokeWidth}" ${filterEffect} />`;
+                
+                // 押さえる鍵盤の上に、どの指でどの音を押さえるか分かりやすくするためのラベリング
+                if (isPressed) {
+                    svgContent += `<circle cx="${k.x + 13.5}" cy="85" r="7" fill="#1E293B" />`;
+                    svgContent += `<text x="${k.x + 13.5}" y="88.5" font-size="9" font-weight="950" fill="#FFFFFF" text-anchor="middle">${k.note}</text>`;
+                    svgContent += `<text x="${k.x + 13.5}" y="105" font-size="9" font-weight="900" fill="#1E293B" text-anchor="middle">★</text>`;
+                } else {
+                    svgContent += `<text x="${k.x + 13.5}" y="104" font-size="8.5" font-weight="bold" fill="#64748B" text-anchor="middle">${k.note}</text>`;
+                }
+            });
+
+            // 黒鍵の描画
+            blackKeys.forEach(k => {
+                const isPressed = pressedKeys.includes(k.index);
+                const fillColor = isPressed ? gradId : 'url(#blackGrad)';
+                const strokeColor = isPressed ? '#334155' : '#1E293B';
+                const filterEffect = isPressed ? 'filter="url(#glow)"' : '';
+                
+                svgContent += `<rect x="${k.x}" y="5" width="16" height="65" rx="2.5" fill="${fillColor}" stroke="${strokeColor}" stroke-width="1" ${filterEffect} />`;
+                
+                if (isPressed) {
+                    svgContent += `<circle cx="${k.x + 8}" cy="50" r="4.5" fill="#FFFFFF" />`;
+                }
+            });
+
+            svg.innerHTML = svgContent;
+
+            // スイッチのアクティブ状態のボタン表示同期
+            const buttons = document.querySelectorAll('#chord-guide-buttons button');
+            buttons.forEach(btn => {
+                if (btn.textContent === targetChord) {
+                    btn.className = `px-4 py-2 rounded-lg border-2 ${chordInfo.border} font-bold ${chordInfo.bg} text-white scale-105 active:scale-95 transition-all text-xs shadow-md`;
+                } else {
+                    btn.className = "px-4 py-2 rounded-lg border-2 border-slate-700 font-bold bg-slate-800 text-slate-300 hover:border-slate-500 active:bg-slate-700 transition-all text-xs";
+                }
+            });
+        }
+
+        // ========================================================
+        // 打楽器パーカッションセレクター＆リズム図描画
+        // ========================================================
+        function renderPercussionSelectors() {
+            const container = document.getElementById('percussion-select-buttons');
+            if(!container) return;
+            container.innerHTML = percussionOptions.map(p => 
+                `<button onclick="selectPercussion('${p.id}')" id="btn-perc-${p.id}" class="px-3.5 py-2.5 rounded-xl border-2 border-slate-700 font-black bg-slate-800 text-slate-300 hover:border-amber-500 active:bg-slate-700 transition-all text-xs flex items-center gap-1.5 select-none">
+                    <span class="text-sm">${p.emoji}</span><span>${p.label}</span>
+                </button>`
+            ).join('');
+        }
+
+        function selectPercussion(id) {
+            state.activePercussion = id;
+            saveStateToLocalStorage();
+            
+            percussionOptions.forEach(p => {
+                const btn = document.getElementById(`btn-perc-${p.id}`);
+                if (btn) {
+                    if (p.id === id) {
+                        btn.className = "px-4 py-3 rounded-xl border-2 border-amber-500 font-black bg-amber-500 text-slate-950 scale-105 transition-all text-xs flex items-center gap-1.5 shadow-md";
+                    } else {
+                        btn.className = "px-3.5 py-2.5 rounded-xl border-2 border-slate-700 font-bold bg-slate-800 text-slate-300 hover:border-slate-500 transition-all text-xs flex items-center gap-1.5";
+                    }
+                }
+            });
+
+            const selected = percussionOptions.find(p => p.id === id);
+            const nameEl = document.getElementById('percussion-instrument-name');
+            if(nameEl) nameEl.textContent = `${selected.emoji} ${selected.label} のたたき方`;
+            
+            renderPercussionGuide(id);
+            updateChordSheet();
+        }
+
+        // --- 打楽器リズムガイドSVG（五線譜調・リアル音符シンボル記譜） ---
+        function renderPercussionGuide(id) {
+            const svg = document.getElementById('instrument-svg');
+            if(!svg || state.instrumentType !== 'percussion') return;
+            const perc = percussionOptions.find(p => p.id === id) || percussionOptions[0];
+            const beats = perc.beats;
+            const doubles = perc.double || [];
+
+            document.getElementById('visual-guide-title').innerHTML = `
+                <div class="flex items-center gap-2 justify-center">
+                    <span>🥁 打楽器リズムガイド</span>
+                    <span class="px-2.5 py-0.5 rounded-full text-slate-950 font-black bg-amber-400">${perc.label}</span>
+                </div>
+            `;
+
+            let svgContent = `
+                <defs>
+                    <linearGradient id="beamGrad" x1="0" y1="0" x2="1" y2="0">
+                        <stop offset="0%" stop-color="#F59E0B"/>
+                        <stop offset="100%" stop-color="#D97706"/>
+                    </linearGradient>
+                </defs>
+                <line x1="10" y1="65" x2="270" y2="65" stroke="#94A3B8" stroke-width="2.5" stroke-linecap="round" />
+                <line x1="15" y1="45" x2="15" y2="85" stroke="#475569" stroke-width="2.5" />
+                <line x1="265" y1="45" x2="265" y2="85" stroke="#475569" stroke-width="2.5" />
+            `;
+
+            const beatWidth = 240 / 4; 
+            for (let i = 0; i < 4; i++) {
+                const x = 35 + (i * beatWidth);
+                const isHit = beats[i] === 1;
+
+                svgContent += `<text x="${x + 10}" y="20" font-size="11" font-weight="bold" fill="#64748B" text-anchor="middle">${i + 1}拍目</text>`;
+
+                const activeColor = '#D97706';
+                const silentColor = '#64748B';
+
+                if (isHit) {
+                    const isDouble = doubles.includes(i); 
+                    
+                    if (isDouble) {
+                        // 「タタ」（八分音符×2）のSVG
+                        svgContent += `<ellipse cx="${x}" cy="65" rx="5" ry="3.5" transform="rotate(-15 ${x} 65)" fill="${activeColor}" />`;
+                        svgContent += `<line x1="${x + 4.5}" y1="65" x2="${x + 4.5}" y2="38" stroke="${activeColor}" stroke-width="2" />`;
+                        
+                        svgContent += `<ellipse cx="${x + 18}" cy="65" rx="5" ry="3.5" transform="rotate(-15 ${x + 18} 65)" fill="${activeColor}" />`;
+                        svgContent += `<line x1="${x + 22.5}" y1="65" x2="${x + 22.5}" y2="38" stroke="${activeColor}" stroke-width="2" />`;
+                        
+                        svgContent += `<line x1="${x + 4.5}" y1="38" x2="${x + 22.5}" y2="38" stroke="url(#beamGrad)" stroke-width="3.5" />`;
+                        
+                        svgContent += `<text x="${x + 9}" y="90" font-size="12" font-weight="black" fill="${activeColor}" text-anchor="middle">タタ</text>`;
+                    } else {
+                        // 「タン」（四分音符）のSVG
+                        svgContent += `<ellipse cx="${x + 10}" cy="65" rx="6" ry="4.2" transform="rotate(-15 ${x + 10} 65)" fill="${activeColor}" />`;
+                        svgContent += `<line x1="${x + 15}" y1="65" x2="${x + 15}" y2="35" stroke="${activeColor}" stroke-width="2.2" />`;
+                        
+                        svgContent += `<text x="${x + 10}" y="90" font-size="12" font-weight="black" fill="${activeColor}" text-anchor="middle">タン</text>`;
+                    }
+                } else {
+                    // 「うん」（四分休符）のSVG
+                    svgContent += `
+                        <path d="M ${x + 5} 45 L ${x + 13} 53 L ${x + 6} 61 C ${x + 14} 63 ${x + 13} 73 ${x + 7} 75 C ${x + 4} 76 ${x + 8} 69 ${x + 11} 67" fill="none" stroke="${silentColor}" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" />
+                        <text x="${x + 10}" y="90" font-size="12" font-weight="black" fill="${silentColor}" text-anchor="middle">うん</text>
+                    `;
+                }
+            }
+
+            svg.innerHTML = svgContent;
+        }
+    </script>
+</body>
+</html>
