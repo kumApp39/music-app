@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>学級の歌 プロンプト＆演奏合奏サポートアプリ</title>
+    <!-- Tailwind CSS (デザイン・レイアウト用) -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* 画面切り替え用の非表示クラス */
@@ -22,12 +23,14 @@
 </head>
 <body class="bg-slate-50 font-sans text-slate-800 min-h-screen flex flex-col">
 
+    <!-- 共通ヘッダー -->
     <header id="main-header" class="hidden-screen bg-white border-b border-slate-200 p-4 sticky top-0 z-10 flex justify-between items-center shadow-sm px-6">
         <div class="flex items-center gap-3 font-bold text-xl text-slate-700">
             <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/></svg>
             <span>学級の歌 アプリ</span>
         </div>
         <div class="flex items-center gap-3">
+            <!-- 先生モード限定 リセットボタン -->
             <button id="btn-reset-data" onclick="resetAllDataWithConfirm()" class="text-xs font-bold text-slate-400 hover:text-red-500 transition-colors flex items-center gap-1.5 no-print border border-slate-100 hover:border-red-100 rounded-full px-3 py-1.5 bg-slate-50 hover:bg-red-50 hidden" title="すべてのデータをクリアして新しい曲を作ります">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                 <span>新しく曲を作る(リセット)</span>
@@ -42,6 +45,9 @@
     </header>
 
     <main class="flex-1 w-full">
+        <!-- ==========================================
+             トップメニュー画面（レイアウト刷新：案B）
+        =========================================== -->
         <div id="screen-top" class="min-h-[90vh] flex items-center justify-center p-6 md:p-12 relative">
             <button onclick="toggleFullScreen()" class="absolute top-6 right-6 text-slate-400 hover:text-slate-600 p-2 bg-white rounded-full shadow-sm border border-slate-100">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>
@@ -57,6 +63,7 @@
                 <p class="text-slate-500 mb-12 text-base md:text-lg font-bold">歌詞作りからAIプロンプト作成、合奏練習までフルサポート</p>
                 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 text-left">
+                    <!-- ① こどもモード -->
                     <button onclick="showScreen('child')" class="group relative overflow-hidden p-6 md:p-8 rounded-[2rem] border-4 border-amber-200 bg-amber-50 active:bg-amber-100 active:scale-95 transition-all flex flex-col items-center text-center shadow-sm">
                         <span class="bg-amber-400 text-white font-black px-4 py-1.5 rounded-full text-sm mb-6">ステップ 1</span>
                         <div class="bg-amber-200 w-20 h-20 rounded-2xl group-hover:scale-110 transition-transform flex items-center justify-center shrink-0 mb-6">
@@ -67,6 +74,7 @@
                         <p class="text-slate-600 text-xs md:text-sm leading-relaxed max-w-[220px]">ことばのひきだしを使って、自分たちだけのオリジナルの歌詞を楽しく考えよう！</p>
                     </button>
 
+                    <!-- ② せんせいモード -->
                     <button onclick="showScreen('teacher')" class="group relative overflow-hidden p-6 md:p-8 rounded-[2rem] border-4 border-blue-200 bg-blue-50 active:bg-blue-100 active:scale-95 transition-all flex flex-col items-center text-center shadow-sm">
                         <span class="bg-blue-500 text-white font-black px-4 py-1.5 rounded-full text-sm mb-6">ステップ 2</span>
                         <div class="bg-blue-200 w-20 h-20 rounded-2xl group-hover:scale-110 transition-transform flex items-center justify-center shrink-0 mb-6">
@@ -77,6 +85,7 @@
                         <p class="text-slate-600 text-xs md:text-sm leading-relaxed max-w-[220px]">曲調や演奏の難易度を設定して、AI（Gemini）用の高精度な指示文を出力します。</p>
                     </button>
 
+                    <!-- ③ みんなで合奏モード -->
                     <button onclick="showScreen('ensemble')" class="group relative overflow-hidden p-6 md:p-8 rounded-[2rem] border-4 border-emerald-200 bg-emerald-50 active:bg-emerald-100 active:scale-95 transition-all flex flex-col items-center text-center shadow-sm">
                         <span class="bg-emerald-500 text-white font-black px-4 py-1.5 rounded-full text-sm mb-6">ステップ 3</span>
                         <div class="bg-emerald-200 w-20 h-20 rounded-2xl group-hover:scale-110 transition-transform flex items-center justify-center shrink-0 mb-6">
@@ -84,12 +93,15 @@
                         </div>
                         <h2 class="text-2xl font-black text-emerald-900 mb-2">③ みんなで合奏する</h2>
                         <p class="text-emerald-700 text-sm font-bold mb-4">【みんなで合奏モード】</p>
-                        <p class="text-slate-600 text-xs md:text-sm leading-relaxed max-w-[220px]">できた歌詞に自動で伴奏コードや打楽器リズムが連動。黒板への投影や楽譜の印刷に最適！</p>
+                        <p class="text-slate-600 text-xs md:text-sm leading-relaxed max-w-[220px]">AIが作成した歌詞を貼り付けると、自動で伴奏コードや打楽器リズムが連動。黒板への投影や楽譜の印刷に最適！</p>
                     </button>
                 </div>
             </div>
         </div>
 
+        <!-- ==========================================
+             こどもモード画面
+        =========================================== -->
         <div id="screen-child" class="hidden-screen max-w-7xl mx-auto space-y-6 md:space-y-8 p-4 md:p-8">
             <div class="bg-gradient-to-r from-amber-200 to-orange-200 rounded-3xl p-8 md:p-10 text-center shadow-md">
                 <h1 class="text-3xl md:text-4xl font-black text-amber-900 mb-4 flex items-center justify-center gap-3">
@@ -100,15 +112,18 @@
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                <!-- 左側：ことばのひきだし -->
                 <div class="bg-white rounded-[2rem] shadow-md p-6 md:p-8 border border-slate-100">
                     <h2 class="text-2xl font-black text-slate-800 mb-6 flex items-center gap-3">
                         <span class="bg-slate-100 p-3 rounded-2xl"><svg class="w-7 h-7 text-amber-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L11 3z"/></svg></span>
                         ことばの ひきだし
                     </h2>
                     <div id="word-bank-container" class="space-y-8">
-                        </div>
+                        <!-- JSで生成されます -->
+                    </div>
                 </div>
 
+                <!-- 右側：かくところ -->
                 <div class="bg-white rounded-[2rem] shadow-md p-6 md:p-8 border border-slate-100 flex flex-col h-full min-h-[600px]">
                     <h2 class="text-2xl font-black text-slate-800 mb-6 flex items-center gap-3">
                         <span class="bg-slate-100 p-3 rounded-2xl"><svg class="w-7 h-7 text-blue-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg></span>
@@ -128,6 +143,9 @@
             </div>
         </div>
 
+        <!-- ==========================================
+             せんせいモード画面
+        =========================================== -->
         <div id="screen-teacher" class="hidden-screen max-w-4xl mx-auto space-y-6 pb-12 p-4 md:p-8">
             <div class="bg-white rounded-2xl shadow-sm p-6 text-center border border-slate-100">
                 <h1 class="text-2xl font-bold text-blue-900 mb-2 flex items-center justify-center gap-2">
@@ -154,6 +172,7 @@
                     <span class="bg-blue-100 text-blue-800 rounded-lg w-7 h-7 flex items-center justify-center text-sm">2</span>楽曲テイスト・演奏難易度・ボーカル設定
                 </h2>
 
+                <!-- 共通：曲のイメージ（自由記述） -->
                 <div class="bg-purple-50 p-5 rounded-xl border border-purple-200 mb-6">
                     <div class="space-y-2">
                         <label class="text-sm font-bold text-purple-900 flex items-center gap-2">
@@ -165,6 +184,7 @@
                     </div>
                 </div>
 
+                <!-- えんそう（伴奏）の難易度設定 -->
                 <div class="bg-emerald-50 p-5 rounded-xl border border-emerald-200 mb-6">
                     <h3 class="text-sm font-bold text-emerald-900 mb-3 flex items-center gap-2">
                         <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
@@ -198,6 +218,7 @@
                     </div>
                 </div>
                 
+                <!-- 簡単モードパネル -->
                 <div id="panel-teacher-simple" class="space-y-6">
                     <div class="bg-slate-50 p-5 rounded-xl border border-slate-200">
                         <h3 class="text-sm font-bold text-slate-700 mb-3 flex items-center gap-2">
@@ -238,6 +259,7 @@
                     </div>
                 </div>
 
+                <!-- 詳細モードパネル -->
                 <div id="panel-teacher-adv" class="space-y-6 hidden-screen">
                     <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="space-y-1"><label class="text-xs font-semibold text-slate-600">ジャンル</label><input type="text" id="adv-genre" oninput="handleSettingChange('adv', 'genre', this.value)" class="w-full p-3 text-sm border rounded-lg outline-none focus:border-emerald-500" /></div>
@@ -261,6 +283,7 @@
                 </div>
             </section>
 
+            <!-- 歌詞確認 -->
             <section class="bg-white rounded-xl shadow-sm p-6 border border-slate-100">
                 <h2 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
                     <span class="bg-blue-100 text-blue-800 rounded-lg w-7 h-7 flex items-center justify-center text-sm">3</span>歌詞の確認
@@ -270,6 +293,7 @@
                 </div>
             </section>
 
+            <!-- プロンプト出力画面 -->
             <section class="bg-slate-800 text-white rounded-2xl shadow-md p-6 no-print">
                 <h2 class="text-lg font-bold mb-4 flex items-center gap-2 text-white">
                     <span class="bg-blue-500 text-white rounded-lg w-7 h-7 flex items-center justify-center text-sm">4</span>完成したプロンプト
@@ -300,8 +324,12 @@
             </section>
         </div>
 
+        <!-- ==========================================
+             みんなで合奏モード画面（ビジュアルガイド強化版）
+        =========================================== -->
         <div id="screen-ensemble" class="hidden-screen max-w-7xl mx-auto space-y-6 pb-12 p-4 md:p-8 print-layout">
             <div class="bg-white rounded-[2rem] shadow-md p-6 md:p-8 border-2 border-emerald-400">
+                <!-- ヘッダー＆印刷ボタン -->
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 border-b border-slate-100 pb-4 no-print">
                     <div>
                         <h2 class="text-xl md:text-2xl font-black text-emerald-800 flex items-center gap-2">
@@ -318,21 +346,26 @@
                     </button>
                 </div>
 
+                <!-- AI本格歌詞貼り付け・編集エリア -->
                 <div class="mb-6 p-5 bg-emerald-50/50 border-2 border-dashed border-emerald-200 rounded-2xl no-print">
                     <label class="block text-sm font-black text-emerald-800 mb-2 flex items-center gap-1.5">
                         <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                         【先生向け】AIが作成した本格的な歌詞をここに貼り付けてください
                     </label>
                     <textarea id="ensemble-textarea-lyrics" oninput="handleEnsembleLyricsChange(this.value)" placeholder="GeminiなどのAIが出力した、完成した本格的な歌詞（純粋な歌詞行だけのテキスト）をここにペーストすると、下のコード楽譜に自動反映されます。" class="w-full h-24 p-4 text-sm bg-white border border-emerald-200 rounded-xl outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 resize-none font-bold text-slate-700"></textarea>
-                    <p class="text-[10px] text-emerald-700 mt-1.5">※本格歌詞がペーストされるまでは、自動的に子供モードで書いた言葉の羅列が表示されます。</p>
+                    <p class="text-[10px] text-emerald-700 mt-1.5">※ここにペーストされた歌詞に合わせて、コード進行とリズムガイドが自動生成されます。</p>
                 </div>
 
+                <!-- 歌詞とコード進行（上部・主役エリア） -->
                 <div class="bg-white rounded-2xl shadow-inner p-6 md:p-8 border border-slate-100 min-h-[220px]">
                     <div id="chord-lyrics-display" class="font-mono text-xl md:text-3xl leading-loose whitespace-pre-wrap text-slate-800 space-y-6 flex flex-col justify-start">
-                        </div>
+                        <!-- JSで構造化された楽譜が挿入されます -->
+                    </div>
                 </div>
 
+                <!-- 視覚的な演奏サポートコントロール＆ビジュアルガイドベース（下部配置） -->
                 <div class="mt-8 bg-slate-900 text-white rounded-2xl p-6 shadow-xl space-y-6 instrument-selector-zone no-print">
+                    <!-- 楽器タイプ切り替えタブ -->
                     <div class="flex gap-2 bg-slate-800 p-1.5 rounded-xl border border-slate-700">
                         <button id="instrument-tab-piano" onclick="switchInstrumentType('piano')" class="flex-1 py-3 rounded-lg font-black text-sm text-center bg-white text-slate-900 shadow-sm flex items-center justify-center gap-2 transition-all">
                             <svg class="w-4 h-4 text-slate-800" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
@@ -345,21 +378,27 @@
                     </div>
 
                     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                        <!-- コントロール部（左側：1/3幅） -->
                         <div class="lg:col-span-4 space-y-4">
                             <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-2">
                                 <svg class="w-3.5 h-3.5 text-amber-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L11 3z"/></svg>
                                 ガイド表示の切り替え
                             </h3>
                             
+                            <!-- ピアノ用コード選択スイッチ -->
                             <div id="piano-guide-panel" class="flex flex-wrap gap-2">
-                                </div>
+                                <!-- JSで自動配置 -->
+                            </div>
 
+                            <!-- 打楽器用楽器選択スイッチ -->
                             <div id="percussion-guide-panel" class="hidden-screen flex flex-col gap-3">
                                 <div id="percussion-select-buttons" class="flex flex-wrap gap-2">
-                                    </div>
+                                    <!-- JSで自動配置 -->
+                                </div>
                             </div>
                         </div>
 
+                        <!-- 高精細ビジュアル表示（右側：2/3幅） -->
                         <div class="lg:col-span-8 bg-slate-800 p-5 rounded-2xl border border-slate-700 flex justify-center items-center">
                             <div class="w-full flex flex-col items-center">
                                 <div id="visual-guide-title" class="text-xs font-black text-emerald-400 mb-3 tracking-wide uppercase"></div>
@@ -374,6 +413,7 @@
         </div>
     </main>
 
+    <!-- アプリのロジック -->
     <script>
         // --- データ定義 ---
         const wordBank = [
@@ -381,7 +421,7 @@
             { category: 'がっこう', color: 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200 border-emerald-300', words: ['きょうしつ', 'こくばん', 'ノート', 'チャイム', 'あたらしいうた', 'ともだち', 'せんせい'] },
             { category: 'きもち', color: 'bg-pink-100 text-pink-800 hover:bg-pink-200 border-pink-300', words: ['どきどき', 'わくわく', 'きらきら', 'えがお', 'うれしい', 'たのしい', 'だいすき'] },
             { category: 'うごき', color: 'bg-blue-100 text-blue-800 hover:bg-blue-200 border-blue-300', words: ['てをつなぐ', 'はしりだす', 'うたう', 'わらう', 'たすけあう', 'みつける', 'ふみだす'] },
-            { category: 'もくひょう', color: 'bg-purple-100 text-purple-800 hover:bg-purple-200 border-purple-300', words: ['あきらめない', 'みんなでいっしょに', 'ぜんりょくで', 'みらいへ', 'ゆめをみる', 'ち力をあわせて'] }
+            { category: 'もくひょう', color: 'bg-purple-100 text-purple-800 hover:bg-purple-200 border-purple-300', words: ['あきらめない', 'みんなでいっしょに', 'ぜんりょくで', 'みらいへ', 'ゆめをみる', 'ちからをあわせて'] }
         ];
 
         const options = {
@@ -630,31 +670,16 @@
             state.lyrics = val + (val.length > 0 && !val.endsWith('\n') ? space : '') + word;
             document.getElementById('child-textarea-lyrics').value = state.lyrics;
             document.getElementById('teacher-textarea-lyrics').value = state.lyrics;
-            
-            // 合奏用歌詞が未入力か初期状態の場合、自動的に同期して表示されるようにする
-            if (!state.ensembleLyrics || state.ensembleLyrics === '' || state.ensembleLyrics === val) {
-                state.ensembleLyrics = state.lyrics;
-                const ensembleArea = document.getElementById('ensemble-textarea-lyrics');
-                if (ensembleArea) ensembleArea.value = state.lyrics;
-            }
 
             updatePrompts();
             updateChordSheet();
             saveStateToLocalStorage();
         }
 
-        // 3モードで相互にリアルタイム保存されるように変更
         function handleLyricsChange(value) {
             state.lyrics = value;
             document.getElementById('child-textarea-lyrics').value = value;
             document.getElementById('teacher-textarea-lyrics').value = value;
-            
-            // 合奏用歌詞が未入力か初期状態の場合、自動的に同期して表示されるようにする
-            if (!state.ensembleLyrics || state.ensembleLyrics === '' || state.ensembleLyrics === value) {
-                state.ensembleLyrics = value;
-                const ensembleArea = document.getElementById('ensemble-textarea-lyrics');
-                if (ensembleArea) ensembleArea.value = value;
-            }
             
             updatePrompts();
             updateChordSheet();
@@ -762,7 +787,7 @@
 
             return `【タスクの実行手順（必ずこの順番で処理してください）】
 ステップ1: 以下の【子供たちが考えたキーワード】をもとに、楽曲のテーマに沿った本格的な「1番と2番の構成の歌詞」を【新たに作詞】してください。キーワードの羅列をそのまま使うのではなく、意味の通る美しい歌詞に膨らませてください。
-ステップ2: 作成した本格的な歌詞テキストを、独立した「プレーンテキストのコードブロック（\`\`\`text ... \`\`\`）」として出力してください。
+ステップ2: 作成した本格的な歌詞テキストを、独立した「プレーンテキストのコードブロック（\`\`\`text ... \`\`\`）」として最初に出力してください。
 ステップ3: ステップ1で作詞した歌詞と以下の【楽曲生成の厳守事項】をもとに、**必ず実際の音楽（曲）を生成**してください。※テキストで歌詞を出力するだけで終わらず、必ず楽曲生成の機能を実行してオーディオを作成してください。
 
 【楽曲生成の厳守事項】
@@ -905,11 +930,11 @@ ${state.lyrics || '(※ここにキーワードが入力されます)'}`;
                 }
             }
 
-            // 子供たちが作ったキーワードではなく、AIが後から作った本格的な歌詞（ensembleLyrics）を最優先でデジタル伴奏楽譜化する
-            const srcLyrics = state.ensembleLyrics || state.lyrics;
+            // AIが後から作った本格的な歌詞（ensembleLyrics）のみをデジタル伴奏楽譜化する
+            const srcLyrics = state.ensembleLyrics;
             
             if (!srcLyrics || srcLyrics.trim() === '') {
-                targetArea.innerHTML = `<div class="text-slate-400 text-sm font-sans text-center py-8">現在歌詞が空っぽです。「①かしをつくる」画面でことばを入れるか、「③みんなで合奏する」画面上部でAI本格歌詞を貼り付けてください。</div>`;
+                targetArea.innerHTML = `<div class="text-slate-400 text-sm font-sans text-center py-8">現在楽譜が空っぽです。画面上部のエリアに、AIが作成した本格的な歌詞を貼り付けてください。</div>`;
                 return;
             }
 
@@ -1122,11 +1147,13 @@ ${state.lyrics || '(※ここにキーワードが入力されます)'}`;
 
             let svgContent = `
                 <defs>
+                    <!-- 連符用の塗りつぶしグラデーション -->
                     <linearGradient id="beamGrad" x1="0" y1="0" x2="1" y2="0">
                         <stop offset="0%" stop-color="#F59E0B"/>
                         <stop offset="100%" stop-color="#D97706"/>
                     </linearGradient>
                 </defs>
+                <!-- 小節ライン -->
                 <line x1="10" y1="65" x2="270" y2="65" stroke="#94A3B8" stroke-width="2.5" stroke-linecap="round" />
                 <line x1="15" y1="45" x2="15" y2="85" stroke="#475569" stroke-width="2.5" />
                 <line x1="265" y1="45" x2="265" y2="85" stroke="#475569" stroke-width="2.5" />
